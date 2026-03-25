@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#6C63FF">
+<title>FluenTogether</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#f0f4ff 0%,#e8eeff 50%,#f5f0ff 100%);color:#2d3748;font-family:'Nunito',sans-serif;min-height:100vh}
+#app{max-width:500px;margin:0 auto;padding:16px 16px 60px}
+h1,h2,h3{font-weight:800}
+.btn{border:none;border-radius:16px;cursor:pointer;font-family:'Nunito';font-weight:700;font-size:15px;padding:14px 24px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;width:100%}
+.btn:active{transform:scale(.97)}
+.bp{background:linear-gradient(135deg,#6C63FF,#9F7AEA);color:#fff;box-shadow:0 4px 15px rgba(108,99,255,.3)}
+.bp:hover{box-shadow:0 6px 20px rgba(108,99,255,.4)}
+.bg{background:#fff;color:#4a5568;border:2px solid #e2e8f0;font-size:14px;padding:10px 18px}
+.bg:hover{border-color:#6C63FF;background:#f7f7ff}
+.bs{padding:6px 14px;font-size:13px;width:auto;border-radius:12px}
+.cd{background:#fff;border:2px solid #e2e8f0;border-radius:20px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+input,textarea{width:100%;background:#f7fafc;border:2px solid #e2e8f0;border-radius:14px;padding:14px;color:#2d3748;font-size:16px;font-family:'Nunito';outline:none;transition:border .2s}
+input:focus,textarea:focus{border-color:#6C63FF;background:#fff}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.fx{display:flex;align-items:center;gap:8px}
+.fc{display:flex;flex-direction:column;gap:8px}
+.tc{text-align:center}
+.lb{background:linear-gradient(135deg,#ebf4ff,#e8eeff);color:#6C63FF;border:2px solid #c3dafe;border-radius:20px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:'Nunito';font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .2s}
+.lb:hover{background:#dbeafe;transform:scale(1.05)}
+.lbl{padding:10px 20px;font-size:15px}
+.lbs{background:linear-gradient(135deg,#fefce8,#fef3c7);color:#d97706;border-color:#fde68a}
+.lbs:hover{background:#fde68a}
+.pb{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;flex:1}
+.pbf{height:100%;border-radius:4px;transition:width .4s}
+.vw{background:#ebf8ff;color:#3182ce;padding:2px 6px;border-radius:6px;cursor:pointer;border-bottom:2px solid #63b3ed;transition:all .2s;font-weight:600}
+.vw:hover{background:#bee3f8}
+.va{background:#f0fff4;color:#38a169;border-bottom-color:#68d391}
+.bubble-a{background:#f0f4ff;border:2px solid #c3dafe;border-radius:4px 16px 16px 16px;padding:12px 16px;max-width:85%}
+.bubble-b{background:#faf5ff;border:2px solid #e9d8fd;border-radius:16px 4px 16px 16px;padding:12px 16px;max-width:85%}
+.scr-word{display:inline-block;background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:8px 14px;margin:4px;cursor:pointer;font-weight:700;font-size:15px;transition:all .15s;user-select:none;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+.scr-word:hover{border-color:#6C63FF;transform:translateY(-2px);box-shadow:0 4px 8px rgba(108,99,255,.15)}
+.scr-sel{background:#ebf4ff;border-color:#6C63FF;color:#6C63FF}
+.scr-slot{min-height:55px;background:#f7fafc;border:2px dashed #cbd5e0;border-radius:14px;padding:8px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:4px}
+.mic-btn{width:80px;height:80px;border-radius:50%;border:3px solid #6C63FF;background:linear-gradient(135deg,#ebf4ff,#e8eeff);color:#6C63FF;font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 4px 15px rgba(108,99,255,.2)}
+.mic-btn:hover{transform:scale(1.08)}
+.mic-btn.recording{border-color:#ef4444;background:linear-gradient(135deg,#fef2f2,#fee2e2);animation:pulse 1s infinite}
+.xp-pop{position:fixed;top:80px;right:20px;background:linear-gradient(135deg,#6C63FF,#9F7AEA);border-radius:14px;padding:10px 18px;color:#fff;font-weight:800;font-size:15px;animation:popUp 1.5s ease forwards;z-index:100;pointer-events:none;box-shadow:0 4px 15px rgba(108,99,255,.4)}
+.lvup{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:200;animation:fi .3s}
+.ach{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#fff;border:2px solid #fbbf24;border-radius:18px;padding:14px 24px;display:flex;align-items:center;gap:12px;z-index:150;animation:sd 2.5s ease forwards;box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.fun-card{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-radius:20px;padding:24px;border:none}
+.stat-card{background:#fff;border-radius:16px;padding:12px 8px;text-align:center;border:2px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.emoji-bg{font-size:60px;opacity:.15;position:absolute;right:-5px;bottom:-5px;pointer-events:none}
+@keyframes popUp{0%{opacity:0;transform:translateY(10px) scale(.8)}20%{opacity:1;transform:translateY(0) scale(1.1)}40%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes si{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes sd{0%{opacity:0;transform:translate(-50%,-40px)}10%{opacity:1;transform:translate(-50%,0)}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-40px)}}
+@keyframes su{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+@keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(400px) rotate(720deg);opacity:0}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes confettiDrop{0%{transform:translateY(0) rotate(0);opacity:.9}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+</style>
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=pxaKSWsn" async></script>
+</head>
+<body>
+<div id="app"></div>
+<div id="xp-pop" style="display:none" class="xp-pop"></div>
+<div id="lvup" style="display:none" class="lvup"></div>
+<div id="ach-t" style="display:none" class="ach"></div>
+<script>
+// ═══════ AUDIO (ResponsiveVoice - works everywhere!) ═══════
+function say(t,r){
+  if(!t)return;
+  r=r||1;
+  // Stop any current speech
+  try{if(window.responsiveVoice)responsiveVoice.cancel();}catch(e){}
+  try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}
+  
+  // Method 1: ResponsiveVoice (best for WebView)
+  if(window.responsiveVoice&&responsiveVoice.voiceSupport()){
+    try{
+      responsiveVoice.speak(t,"US English Female",{rate:r,pitch:1,volume:1});
+      return;
+    }catch(e){}
+  }
+  // Method 2: speechSynthesis (works in Chrome)
+  if(window.speechSynthesis){
+    try{
+      var u=new SpeechSynthesisUtterance(t);
+      u.lang='en-US';u.rate=r;u.volume=1;u.pitch=1;
+      speechSynthesis.speak(u);
+      return;
+    }catch(e){}
+  }
+}
+function saySlow(t){say(t,0.65);}
+function stopAudio(){
+  try{if(window.responsiveVoice)responsiveVoice.cancel();}catch(e){}
+  try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}
+}
+
+// ═══════ SPEECH RECOGNITION ═══════
+var recognition=null,isRecording=false;
+function initSR(){var SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return false;recognition=new SR();recognition.lang='en-US';recognition.continuous=false;recognition.interimResults=false;return true;}
+function startRec(cb){if(isRecording)return;if(!recognition&&!initSR()){cb(null,'Navegador não suporta');return;}recognition.onresult=function(e){var t=e.results[0][0].transcript;var c=e.results[0][0].confidence;cb(t,null,c);};recognition.onerror=function(e){isRecording=false;cb(null,e.error)};recognition.onend=function(){isRecording=false;render()};isRecording=true;try{recognition.start()}catch(e){isRecording=false;cb(null,'Erro ao iniciar mic');return;}render();}
+
+const V={
+greetings:{icon:"👋",title:"Greetings",pt:"Cumprimentos",lv:"A1",cards:[
+{id:"g1",en:"Hi! How are you?",pt:"Oi! Como vai?"},{id:"g2",en:"Good morning!",pt:"Bom dia!"},
+{id:"g3",en:"I'm fine, thanks. And you?",pt:"Estou bem, obrigado. E você?"},{id:"g4",en:"Nice to meet you!",pt:"Prazer em conhecer!"},
+{id:"g5",en:"See you later!",pt:"Até mais!"},{id:"g6",en:"What's your name?",pt:"Qual seu nome?"},
+{id:"g7",en:"My name is...",pt:"Meu nome é..."},{id:"g8",en:"Have a good day!",pt:"Tenha um bom dia!"},
+{id:"g9",en:"How's it going?",pt:"Como vai?"},{id:"g10",en:"Take care!",pt:"Se cuida!"},
+{id:"g11",en:"Long time no see!",pt:"Quanto tempo!"},{id:"g12",en:"Good evening!",pt:"Boa noite! (chegando)"},
+{id:"g13",en:"Good night! Sleep well.",pt:"Boa noite! Durma bem."},{id:"g14",en:"See you tomorrow!",pt:"Até amanhã!"},
+{id:"g15",en:"It's nice to see you again.",pt:"É bom te ver de novo."},
+]},
+daily:{icon:"🏠",title:"Daily Life",pt:"Dia a Dia",lv:"A1",cards:[
+{id:"d1",en:"I'm hungry. Let's eat.",pt:"Estou com fome. Vamos comer."},{id:"d2",en:"I'm tired. I need to rest.",pt:"Estou cansado. Preciso descansar."},
+{id:"d3",en:"Can you help me, please?",pt:"Pode me ajudar, por favor?"},{id:"d4",en:"What time is it?",pt:"Que horas são?"},
+{id:"d5",en:"I need to go now.",pt:"Preciso ir agora."},{id:"d6",en:"I don't understand. Can you repeat?",pt:"Não entendo. Pode repetir?"},
+{id:"d7",en:"I'm ready. Let's go!",pt:"Estou pronto. Vamos!"},{id:"d8",en:"Wait a moment, please.",pt:"Espere um momento."},
+{id:"d9",en:"I forgot my keys at home.",pt:"Esqueci minhas chaves em casa."},{id:"d10",en:"I'm going to take a shower.",pt:"Vou tomar banho."},
+{id:"d11",en:"Can you turn off the light?",pt:"Pode apagar a luz?"},{id:"d12",en:"What are we having for dinner?",pt:"O que vamos jantar?"},
+{id:"d13",en:"I'm coming home now.",pt:"Estou indo para casa agora."},{id:"d14",en:"Did you sleep well?",pt:"Dormiu bem?"},
+{id:"d15",en:"I have a headache.",pt:"Estou com dor de cabeça."},
+]},
+food:{icon:"🍽️",title:"Restaurant",pt:"Restaurante",lv:"A1",cards:[
+{id:"f1",en:"A table for two, please.",pt:"Mesa para dois, por favor."},{id:"f2",en:"Can I see the menu?",pt:"Posso ver o cardápio?"},
+{id:"f3",en:"I'd like a coffee, please.",pt:"Quero um café, por favor."},{id:"f4",en:"The check, please.",pt:"A conta, por favor."},
+{id:"f5",en:"This is delicious!",pt:"Está delicioso!"},{id:"f6",en:"What do you recommend?",pt:"O que recomenda?"},
+{id:"f7",en:"Can I pay with card?",pt:"Posso pagar com cartão?"},{id:"f8",en:"One coffee to go, please.",pt:"Um café para viagem."},
+{id:"f9",en:"Is this spicy?",pt:"É apimentado?"},{id:"f10",en:"Can I have more water?",pt:"Pode trazer mais água?"},
+{id:"f11",en:"I'm allergic to nuts.",pt:"Sou alérgico a nozes."},{id:"f12",en:"We'd like to split the bill.",pt:"Queremos dividir a conta."},
+{id:"f13",en:"That was amazing! Thank you.",pt:"Estava incrível! Obrigado."},{id:"f14",en:"I'm full. No more, thanks.",pt:"Estou satisfeito."},
+{id:"f15",en:"Could we sit by the window?",pt:"Podemos sentar perto da janela?"},
+]},
+shopping:{icon:"🛒",title:"Shopping",pt:"Compras",lv:"A2",cards:[
+{id:"sh1",en:"How much is this?",pt:"Quanto custa?"},{id:"sh2",en:"I'm just looking, thanks.",pt:"Só estou olhando."},
+{id:"sh3",en:"Can I try this on?",pt:"Posso experimentar?"},{id:"sh4",en:"I'll take it!",pt:"Vou levar!"},
+{id:"sh5",en:"That's too expensive for me.",pt:"É muito caro pra mim."},{id:"sh6",en:"Do you have a bigger size?",pt:"Tem um tamanho maior?"},
+{id:"sh7",en:"I'd like to return this.",pt:"Gostaria de devolver."},{id:"sh8",en:"Where is the bathroom?",pt:"Onde é o banheiro?"},
+{id:"sh9",en:"Do you have this in another color?",pt:"Tem em outra cor?"},{id:"sh10",en:"Is there a discount?",pt:"Tem desconto?"},
+{id:"sh11",en:"Can I exchange this for a different size?",pt:"Posso trocar por outro tamanho?"},{id:"sh12",en:"Do you accept credit cards?",pt:"Aceitam cartão de crédito?"},
+{id:"sh13",en:"Where can I find the milk?",pt:"Onde encontro o leite?"},{id:"sh14",en:"Keep the change.",pt:"Fique com o troco."},
+{id:"sh15",en:"This shirt fits perfectly!",pt:"Essa camisa serve perfeitamente!"},
+]},
+travel:{icon:"✈️",title:"Travel",pt:"Viagem",lv:"A2",cards:[
+{id:"t1",en:"Where is the train station?",pt:"Onde fica a estação de trem?"},{id:"t2",en:"Excuse me, I'm lost.",pt:"Com licença, estou perdido."},
+{id:"t3",en:"Turn left at the corner.",pt:"Vire à esquerda na esquina."},{id:"t4",en:"How do I get to the airport?",pt:"Como chego no aeroporto?"},
+{id:"t5",en:"I have a reservation for tonight.",pt:"Tenho reserva para hoje."},{id:"t6",en:"One ticket to downtown, please.",pt:"Uma passagem pro centro."},
+{id:"t7",en:"Is it far from here?",pt:"É longe daqui?"},{id:"t8",en:"I need a taxi, please.",pt:"Preciso de um táxi."},
+{id:"t9",en:"What time does the bus leave?",pt:"Que horas sai o ônibus?"},{id:"t10",en:"Can you show me on the map?",pt:"Pode me mostrar no mapa?"},
+{id:"t11",en:"Go straight for two blocks.",pt:"Siga reto por dois quarteirões."},{id:"t12",en:"Is there a pharmacy nearby?",pt:"Tem farmácia perto?"},
+{id:"t13",en:"How long does it take to get there?",pt:"Quanto tempo demora para chegar?"},{id:"t14",en:"I'd like a room with a view.",pt:"Quero um quarto com vista."},
+{id:"t15",en:"Where can I rent a car?",pt:"Onde posso alugar um carro?"},
+]},
+work:{icon:"💼",title:"Work",pt:"Trabalho",lv:"B1",cards:[
+{id:"w1",en:"I have a meeting at three o'clock.",pt:"Tenho reunião às três."},{id:"w2",en:"Can we reschedule for tomorrow?",pt:"Podemos remarcar para amanhã?"},
+{id:"w3",en:"I'll send you an email about it.",pt:"Vou te mandar um email sobre isso."},{id:"w4",en:"What's the deadline for this project?",pt:"Qual o prazo desse projeto?"},
+{id:"w5",en:"I'm working from home today.",pt:"Estou trabalhando de casa hoje."},{id:"w6",en:"Could you clarify that point?",pt:"Pode esclarecer esse ponto?"},
+{id:"w7",en:"Let me check and get back to you.",pt:"Vou verificar e te retorno."},{id:"w8",en:"I completely agree with your idea.",pt:"Concordo totalmente com sua ideia."},
+{id:"w9",en:"Sorry, I'm running late.",pt:"Desculpe, estou atrasado."},{id:"w10",en:"Let's schedule a call for next week.",pt:"Vamos agendar uma ligação para semana que vem."},
+{id:"w11",en:"I need more time to finish this.",pt:"Preciso de mais tempo para terminar."},{id:"w12",en:"The presentation went really well.",pt:"A apresentação foi muito bem."},
+{id:"w13",en:"Can we push this meeting back an hour?",pt:"Podemos adiar essa reunião uma hora?"},{id:"w14",en:"I'll follow up with them tomorrow.",pt:"Vou dar seguimento com eles amanhã."},
+{id:"w15",en:"We're ahead of schedule.",pt:"Estamos adiantados no cronograma."},
+]},
+opinions:{icon:"💭",title:"Opinions",pt:"Opiniões",lv:"B2",cards:[
+{id:"o1",en:"I think that's a great idea.",pt:"Acho que é uma ótima ideia."},{id:"o2",en:"I couldn't agree more.",pt:"Concordo totalmente."},
+{id:"o3",en:"I see your point, but I disagree.",pt:"Entendo seu ponto, mas discordo."},{id:"o4",en:"That makes a lot of sense.",pt:"Faz muito sentido."},
+{id:"o5",en:"I'm not sure about that.",pt:"Não tenho certeza disso."},{id:"o6",en:"It really depends on the situation.",pt:"Depende muito da situação."},
+{id:"o7",en:"To be honest, I didn't enjoy it.",pt:"Para ser honesto, não gostei."},{id:"o8",en:"I'd rather stay home tonight.",pt:"Prefiro ficar em casa hoje."},
+{id:"o9",en:"I have mixed feelings about it.",pt:"Tenho sentimentos mistos sobre isso."},{id:"o10",en:"From my perspective, it's worth trying.",pt:"Na minha perspectiva, vale a pena tentar."},
+{id:"o11",en:"I'm totally on board with that plan.",pt:"Estou totalmente de acordo com esse plano."},{id:"o12",en:"That's not really my cup of tea.",pt:"Não é bem a minha praia."},
+]},
+storytelling:{icon:"📝",title:"Telling Stories",pt:"Contando Histórias",lv:"B2",cards:[
+{id:"st1",en:"Let me tell you what happened yesterday.",pt:"Deixa eu te contar o que aconteceu ontem."},
+{id:"st2",en:"You won't believe what I saw!",pt:"Você não vai acreditar no que eu vi!"},
+{id:"st3",en:"So basically, I was walking down the street when...",pt:"Basicamente, eu estava andando na rua quando..."},
+{id:"st4",en:"The funniest thing happened at work today.",pt:"A coisa mais engraçada aconteceu no trabalho hoje."},
+{id:"st5",en:"I ran into an old friend at the supermarket.",pt:"Encontrei um velho amigo no mercado."},
+{id:"st6",en:"It turned out he had moved to our neighborhood.",pt:"Acabou que ele tinha mudado pro nosso bairro."},
+{id:"st7",en:"We ended up talking for over an hour.",pt:"Acabamos conversando por mais de uma hora."},
+{id:"st8",en:"By the time I got home, it was already dark.",pt:"Quando cheguei em casa, já estava escuro."},
+{id:"st9",en:"Looking back, it was one of my best days.",pt:"Olhando pra trás, foi um dos meus melhores dias."},
+{id:"st10",en:"Long story short, everything worked out.",pt:"Resumindo, tudo deu certo."},
+{id:"st11",en:"I had no idea that was going to happen.",pt:"Eu não fazia ideia que isso ia acontecer."},
+{id:"st12",en:"Out of nowhere, it started pouring rain.",pt:"Do nada, começou a chover muito."},
+{id:"st13",en:"Meanwhile, my wife was waiting for me at home.",pt:"Enquanto isso, minha esposa me esperava em casa."},
+{id:"st14",en:"In the end, we all had a good laugh about it.",pt:"No final, todos rimos bastante disso."},
+{id:"st15",en:"That's a story I'll never forget.",pt:"Essa é uma história que nunca vou esquecer."},
+]},
+social:{icon:"🤝",title:"Social Situations",pt:"Situações Sociais",lv:"B2",cards:[
+{id:"so1",en:"Would you like to join us for dinner?",pt:"Quer jantar com a gente?"},
+{id:"so2",en:"I'm sorry, I can't make it this time.",pt:"Desculpa, dessa vez não consigo."},
+{id:"so3",en:"How about we reschedule for next week?",pt:"Que tal remarcarmos pra semana que vem?"},
+{id:"so4",en:"It was really nice catching up with you.",pt:"Foi muito bom colocar o papo em dia."},
+{id:"so5",en:"I didn't mean to offend you.",pt:"Não quis te ofender."},
+{id:"so6",en:"No hard feelings, right?",pt:"Sem ressentimentos, né?"},
+{id:"so7",en:"Could you do me a huge favor?",pt:"Poderia me fazer um grande favor?"},
+{id:"so8",en:"I really appreciate your help with this.",pt:"Agradeço muito sua ajuda com isso."},
+{id:"so9",en:"I owe you one!",pt:"Te devo uma!"},
+{id:"so10",en:"Don't mention it. That's what friends are for.",pt:"Imagina. Amigos são pra isso."},
+{id:"so11",en:"I hate to bother you, but could you help me?",pt:"Odeio incomodar, mas poderia me ajudar?"},
+{id:"so12",en:"Feel free to drop by anytime.",pt:"Fique à vontade para aparecer quando quiser."},
+{id:"so13",en:"We should definitely do this more often.",pt:"Devíamos fazer isso mais vezes."},
+{id:"so14",en:"It's been ages since we last talked!",pt:"Faz séculos que não conversamos!"},
+{id:"so15",en:"Let's keep in touch!",pt:"Vamos manter contato!"},
+]},
+phrasal:{icon:"🚀",title:"Phrasal Verbs",pt:"Phrasal Verbs",lv:"B1",cards:[
+{id:"p1",en:"I need to wake up early tomorrow.",pt:"Preciso acordar cedo amanhã."},{id:"p2",en:"Can you pick me up at the airport?",pt:"Pode me buscar no aeroporto?"},
+{id:"p3",en:"I'm looking forward to the weekend.",pt:"Estou ansioso pelo fim de semana."},{id:"p4",en:"She grew up in a small town.",pt:"Ela cresceu numa cidade pequena."},
+{id:"p5",en:"Don't give up! Keep trying.",pt:"Não desista! Continue tentando."},{id:"p6",en:"I need to figure out this problem.",pt:"Preciso resolver esse problema."},
+{id:"p7",en:"Can you turn on the light, please?",pt:"Pode acender a luz?"},{id:"p8",en:"We ran out of milk.",pt:"Ficamos sem leite."},
+{id:"p9",en:"I came across an old photo yesterday.",pt:"Encontrei uma foto antiga ontem."},{id:"p10",en:"Let's go over the plan one more time.",pt:"Vamos revisar o plano mais uma vez."},
+{id:"p11",en:"She takes after her mother.",pt:"Ela puxou a mãe."},{id:"p12",en:"I put off studying until the last minute.",pt:"Adiei estudar até o último minuto."},
+{id:"p13",en:"He broke down and started crying.",pt:"Ele desabou e começou a chorar."},{id:"p14",en:"We need to cut down on sugar.",pt:"Precisamos reduzir o açúcar."},
+{id:"p15",en:"I'll look into it and let you know.",pt:"Vou investigar e te aviso."},
+]},
+idioms:{icon:"🎭",title:"Idioms",pt:"Expressões",lv:"C1",cards:[
+{id:"i1",en:"That test was a piece of cake!",pt:"Aquela prova foi moleza!"},{id:"i2",en:"Break a leg on your presentation!",pt:"Boa sorte na apresentação!"},
+{id:"i3",en:"You hit the nail on the head.",pt:"Você acertou em cheio."},{id:"i4",en:"I'm feeling a bit under the weather.",pt:"Estou meio indisposto."},
+{id:"i5",en:"The ball is in your court now.",pt:"Agora a decisão é sua."},{id:"i6",en:"Let's call it a day.",pt:"Vamos encerrar por hoje."},
+{id:"i7",en:"Just bite the bullet and do it.",pt:"Engole o choro e faz."},{id:"i8",en:"That car cost an arm and a leg.",pt:"Aquele carro custou uma fortuna."},
+{id:"i9",en:"He always beats around the bush.",pt:"Ele sempre enrola para falar."},{id:"i10",en:"It's not rocket science.",pt:"Não é nenhum bicho de sete cabeças."},
+{id:"i11",en:"We're on the same page now.",pt:"Estamos na mesma página agora."},{id:"i12",en:"She's the best by a long shot.",pt:"Ela é a melhor de longe."},
+]},
+fluency:{icon:"👑",title:"Fluent Expression",pt:"Expressão Fluente",lv:"C2",cards:[
+{id:"fl1",en:"I can't help but wonder why things turned out this way.",pt:"Não consigo deixar de pensar por que as coisas acabaram assim."},
+{id:"fl2",en:"For what it's worth, I think you made the right call.",pt:"Pelo que vale, acho que você tomou a decisão certa."},
+{id:"fl3",en:"It goes without saying that we need to be careful.",pt:"Nem precisa dizer que precisamos ter cuidado."},
+{id:"fl4",en:"He was furious, to put it mildly.",pt:"Ele estava furioso, para dizer o mínimo."},
+{id:"fl5",en:"That's beside the point entirely.",pt:"Isso não vem ao caso."},
+{id:"fl6",en:"With all due respect, I beg to differ.",pt:"Com todo respeito, discordo."},
+{id:"fl7",en:"Bear with me while I explain this.",pt:"Tenha paciência enquanto explico."},
+{id:"fl8",en:"As far as I'm concerned, the matter is settled.",pt:"No que me diz respeito, o assunto está encerrado."},
+{id:"fl9",en:"I'd be lying if I said I wasn't worried.",pt:"Estaria mentindo se dissesse que não estou preocupado."},
+{id:"fl10",en:"There's more to it than meets the eye.",pt:"Tem mais do que parece à primeira vista."},
+]},
+health:{icon:"🏥",title:"Health & Body",pt:"Saúde & Corpo",lv:"A1",cards:[
+{id:"h1",en:"I have a headache.",pt:"Estou com dor de cabeça."},{id:"h2",en:"My stomach hurts.",pt:"Minha barriga dói."},
+{id:"h3",en:"I need to see a doctor.",pt:"Preciso ir ao médico."},{id:"h4",en:"I'm not feeling well.",pt:"Não estou me sentindo bem."},
+{id:"h5",en:"I have a fever.",pt:"Estou com febre."},{id:"h6",en:"I'm allergic to this medicine.",pt:"Sou alérgico a esse remédio."},
+{id:"h7",en:"It hurts when I breathe.",pt:"Dói quando respiro."},{id:"h8",en:"I need some rest.",pt:"Preciso descansar."},
+{id:"h9",en:"Can I have some water?",pt:"Posso tomar água?"},{id:"h10",en:"I feel dizzy.",pt:"Estou tonto."},
+{id:"h11",en:"I have a sore throat.",pt:"Estou com dor de garganta."},{id:"h12",en:"I can't sleep at night.",pt:"Não consigo dormir à noite."},
+{id:"h13",en:"I broke my arm.",pt:"Quebrei meu braço."},{id:"h14",en:"I need to take my medicine.",pt:"Preciso tomar meu remédio."},
+{id:"h15",en:"I'm feeling much better now.",pt:"Estou me sentindo bem melhor."},
+]},
+family:{icon:"👨‍👩‍👧‍👦",title:"Family",pt:"Família",lv:"A1",cards:[
+{id:"fm1",en:"This is my wife.",pt:"Esta é minha esposa."},{id:"fm2",en:"This is my husband.",pt:"Este é meu marido."},
+{id:"fm3",en:"I have two children.",pt:"Tenho dois filhos."},{id:"fm4",en:"My daughter is five years old.",pt:"Minha filha tem cinco anos."},
+{id:"fm5",en:"My parents live in another city.",pt:"Meus pais moram em outra cidade."},{id:"fm6",en:"I miss my family.",pt:"Sinto falta da minha família."},
+{id:"fm7",en:"We're having a family dinner.",pt:"Vamos ter um jantar em família."},{id:"fm8",en:"My brother is older than me.",pt:"Meu irmão é mais velho que eu."},
+{id:"fm9",en:"She looks like her mother.",pt:"Ela se parece com a mãe."},{id:"fm10",en:"We grew up together.",pt:"Crescemos juntos."},
+{id:"fm11",en:"My grandmother makes the best food.",pt:"Minha avó faz a melhor comida."},{id:"fm12",en:"We visit them every weekend.",pt:"Visitamos eles todo fim de semana."},
+{id:"fm13",en:"He's my best friend and my brother.",pt:"Ele é meu melhor amigo e meu irmão."},{id:"fm14",en:"Family is everything to me.",pt:"Família é tudo para mim."},
+{id:"fm15",en:"We're expecting a baby!",pt:"Estamos esperando um bebê!"},
+]},
+weather:{icon:"🌤️",title:"Weather",pt:"Clima & Tempo",lv:"A1",cards:[
+{id:"wt1",en:"It's a beautiful day today!",pt:"Está um dia lindo hoje!"},{id:"wt2",en:"It's raining outside.",pt:"Está chovendo lá fora."},
+{id:"wt3",en:"It's really cold today.",pt:"Está muito frio hoje."},{id:"wt4",en:"The sun is shining.",pt:"O sol está brilhando."},
+{id:"wt5",en:"It's going to rain later.",pt:"Vai chover mais tarde."},{id:"wt6",en:"I love sunny days.",pt:"Amo dias ensolarados."},
+{id:"wt7",en:"It's too hot to go outside.",pt:"Está quente demais para sair."},{id:"wt8",en:"Bring an umbrella just in case.",pt:"Leve um guarda-chuva por precaução."},
+{id:"wt9",en:"The weather forecast says it'll snow.",pt:"A previsão diz que vai nevar."},{id:"wt10",en:"It's windy today, be careful.",pt:"Está ventando, cuidado."},
+{id:"wt11",en:"I love the sound of rain.",pt:"Amo o som da chuva."},{id:"wt12",en:"Spring is my favorite season.",pt:"Primavera é minha estação favorita."},
+{id:"wt13",en:"It's freezing! Close the window.",pt:"Está congelando! Fecha a janela."},{id:"wt14",en:"What's the temperature outside?",pt:"Qual a temperatura lá fora?"},
+{id:"wt15",en:"The weather is changing.",pt:"O tempo está mudando."},
+]},
+feelings:{icon:"❤️",title:"Feelings",pt:"Sentimentos",lv:"A2",cards:[
+{id:"fe1",en:"I'm so happy right now!",pt:"Estou tão feliz agora!"},{id:"fe2",en:"I feel sad today.",pt:"Me sinto triste hoje."},
+{id:"fe3",en:"I'm worried about you.",pt:"Estou preocupado com você."},{id:"fe4",en:"That makes me angry.",pt:"Isso me deixa com raiva."},
+{id:"fe5",en:"I'm really excited about this!",pt:"Estou muito animado com isso!"},{id:"fe6",en:"I feel lonely sometimes.",pt:"Me sinto sozinho às vezes."},
+{id:"fe7",en:"I'm proud of you!",pt:"Tenho orgulho de você!"},{id:"fe8",en:"I'm scared of the dark.",pt:"Tenho medo do escuro."},
+{id:"fe9",en:"I'm grateful for everything.",pt:"Sou grato por tudo."},{id:"fe10",en:"I feel stressed about work.",pt:"Estou estressado com o trabalho."},
+{id:"fe11",en:"I'm disappointed with the result.",pt:"Estou decepcionado com o resultado."},{id:"fe12",en:"That surprised me!",pt:"Isso me surpreendeu!"},
+{id:"fe13",en:"I feel calm and relaxed.",pt:"Me sinto calmo e relaxado."},{id:"fe14",en:"I'm jealous of her trip.",pt:"Tenho inveja da viagem dela."},
+{id:"fe15",en:"I'm confused. Can you explain?",pt:"Estou confuso. Pode explicar?"},
+]},
+tech:{icon:"📱",title:"Technology",pt:"Tecnologia",lv:"A2",cards:[
+{id:"tc1",en:"My phone is dead. I need to charge it.",pt:"Meu celular descarregou."},{id:"tc2",en:"What's the Wi-Fi password?",pt:"Qual a senha do Wi-Fi?"},
+{id:"tc3",en:"Can you send me a message?",pt:"Pode me mandar uma mensagem?"},{id:"tc4",en:"I'll look it up on the internet.",pt:"Vou pesquisar na internet."},
+{id:"tc5",en:"My computer is really slow.",pt:"Meu computador está muito lento."},{id:"tc6",en:"I'll send you the link.",pt:"Vou te mandar o link."},
+{id:"tc7",en:"Can you take a photo of us?",pt:"Pode tirar uma foto nossa?"},{id:"tc8",en:"I saw it on social media.",pt:"Vi nas redes sociais."},
+{id:"tc9",en:"My internet connection is terrible.",pt:"Minha conexão está péssima."},{id:"tc10",en:"I need to update my phone.",pt:"Preciso atualizar meu celular."},
+{id:"tc11",en:"Let's do a video call tonight.",pt:"Vamos fazer uma chamada de vídeo."},{id:"tc12",en:"I forgot my password again.",pt:"Esqueci minha senha de novo."},
+{id:"tc13",en:"Can you download this app?",pt:"Pode baixar esse aplicativo?"},{id:"tc14",en:"The website is not working.",pt:"O site não está funcionando."},
+{id:"tc15",en:"I'll share the document with you.",pt:"Vou compartilhar o documento com você."},
+]},
+hobbies:{icon:"⚽",title:"Hobbies & Sports",pt:"Hobbies & Esportes",lv:"B1",cards:[
+{id:"hb1",en:"I play soccer every Saturday.",pt:"Jogo futebol todo sábado."},{id:"hb2",en:"I've been learning to cook.",pt:"Tenho aprendido a cozinhar."},
+{id:"hb3",en:"Reading is my favorite hobby.",pt:"Leitura é meu hobby favorito."},{id:"hb4",en:"I go to the gym three times a week.",pt:"Vou à academia 3 vezes por semana."},
+{id:"hb5",en:"I started painting last month.",pt:"Comecei a pintar mês passado."},{id:"hb6",en:"We love hiking on weekends.",pt:"Amamos fazer trilha nos fins de semana."},
+{id:"hb7",en:"I've been watching a great TV series.",pt:"Tenho assistido uma série ótima."},{id:"hb8",en:"I play guitar in my free time.",pt:"Toco violão no tempo livre."},
+{id:"hb9",en:"Swimming is great exercise.",pt:"Natação é um ótimo exercício."},{id:"hb10",en:"I'm training for a marathon.",pt:"Estou treinando para uma maratona."},
+{id:"hb11",en:"I enjoy gardening on sunny days.",pt:"Gosto de jardinagem em dias de sol."},{id:"hb12",en:"We play board games every Friday.",pt:"Jogamos jogos de tabuleiro toda sexta."},
+{id:"hb13",en:"I'm into photography lately.",pt:"Tenho curtido fotografia ultimamente."},{id:"hb14",en:"Dancing makes me feel alive.",pt:"Dançar me faz sentir vivo."},
+{id:"hb15",en:"I want to learn how to surf.",pt:"Quero aprender a surfar."},
+]},
+};
+
+const DLGS={
+greetings:[{s:"A",en:"Hey! How are you?",pt:"Como vai?"},{s:"B",en:"I'm great! And you?",pt:"Ótimo! E você?"},{s:"A",en:"Good! See you later!",pt:"Até mais!"},{s:"B",en:"Bye! Take care!",pt:"Tchau! Se cuida!"}],
+daily:[{s:"A",en:"I'm so tired today.",pt:"Tão cansado."},{s:"B",en:"Me too. Let's order food.",pt:"Eu também. Vamos pedir."},{s:"A",en:"Pizza sounds good!",pt:"Pizza parece bom!"},{s:"B",en:"Perfect. I'll order now.",pt:"Perfeito. Vou pedir."}],
+food:[{s:"A",en:"Table for two, please.",pt:"Mesa para dois."},{s:"B",en:"Here's the menu.",pt:"O cardápio."},{s:"A",en:"What do you recommend?",pt:"O que recomenda?"},{s:"B",en:"The pasta is great!",pt:"A massa é ótima!"}],
+shopping:[{s:"A",en:"How much is this shirt?",pt:"Quanto custa?"},{s:"B",en:"$25. Want to try it on?",pt:"$25. Quer experimentar?"},{s:"A",en:"It fits! I'll take it.",pt:"Serviu! Vou levar."},{s:"B",en:"Cash or card?",pt:"Dinheiro ou cartão?"}],
+travel:[{s:"A",en:"How do I get to the station?",pt:"Como chego na estação?"},{s:"B",en:"Go straight, turn left.",pt:"Siga reto, vire à esquerda."},{s:"A",en:"Is it far?",pt:"É longe?"},{s:"B",en:"About 5 minutes.",pt:"Uns 5 minutos."}],
+work:[{s:"A",en:"Can we meet at 2?",pt:"Podemos às 2?"},{s:"B",en:"I have a meeting. How about 3?",pt:"Tenho reunião. Que tal 3?"},{s:"A",en:"Works! I'll send the agenda.",pt:"OK! Mando a pauta."},{s:"B",en:"Great, see you then.",pt:"Ótimo, até lá."}],
+opinions:[{s:"A",en:"What did you think of the movie?",pt:"O que achou?"},{s:"B",en:"To be honest, not my thing.",pt:"Pra ser honesto, não curti."},{s:"A",en:"Really? I loved it!",pt:"Sério? Adorei!"},{s:"B",en:"I see your point. The acting was good.",pt:"Entendo. A atuação foi boa."}],
+storytelling:[{s:"A",en:"You won't believe what happened!",pt:"Não vai acreditar!"},{s:"B",en:"Tell me! What happened?",pt:"Me conta! O que houve?"},{s:"A",en:"I ran into my old teacher at the mall.",pt:"Encontrei meu antigo professor no shopping."},{s:"B",en:"No way! That's such a coincidence!",pt:"Não acredito! Que coincidência!"}],
+social:[{s:"A",en:"Would you like to join us for dinner Saturday?",pt:"Quer jantar com a gente sábado?"},{s:"B",en:"I'd love to! What time?",pt:"Adoraria! Que horas?"},{s:"A",en:"Around seven. Feel free to bring your wife!",pt:"Umas sete. Fique à vontade para trazer sua esposa!"},{s:"B",en:"Sounds great! We'll be there. Thanks!",pt:"Ótimo! Estaremos lá. Obrigado!"}],
+phrasal:[{s:"A",en:"I can't figure out this problem.",pt:"Não consigo resolver."},{s:"B",en:"Don't give up! Let me help.",pt:"Não desista! Deixa eu ajudar."},{s:"A",en:"I've been putting it off all week.",pt:"Adiei a semana toda."},{s:"B",en:"Let's go over it together.",pt:"Vamos revisar juntos."}],
+idioms:[{s:"A",en:"How was the exam?",pt:"Como foi a prova?"},{s:"B",en:"Piece of cake!",pt:"Moleza!"},{s:"A",en:"Lucky you. I'm under the weather.",pt:"Sortudo. Tô doente."},{s:"B",en:"Get rest. Let's call it a day.",pt:"Descanse. Vamos encerrar."}],
+fluency:[{s:"A",en:"I think we should cut the budget.",pt:"Devemos cortar o orçamento."},{s:"B",en:"I beg to differ. The data says otherwise.",pt:"Discordo. Os dados dizem o contrário."},{s:"A",en:"Bear with me — let me explain.",pt:"Paciência — deixe explicar."},{s:"B",en:"Fair enough. Go ahead.",pt:"Justo. Prossiga."}],
+health:[{s:"A",en:"I'm not feeling well today.",pt:"Não me sinto bem."},{s:"B",en:"What's wrong?",pt:"O que houve?"},{s:"A",en:"I have a headache and a fever.",pt:"Dor de cabeça e febre."},{s:"B",en:"You should see a doctor.",pt:"Devia ir ao médico."}],
+family:[{s:"A",en:"How's your family doing?",pt:"Como está a família?"},{s:"B",en:"Great! My daughter started school.",pt:"Bem! Minha filha entrou na escola."},{s:"A",en:"Already? Time flies!",pt:"Já? O tempo voa!"},{s:"B",en:"I know! She looks like her mom.",pt:"Né! Parece a mãe."}],
+weather:[{s:"A",en:"It's such a beautiful day!",pt:"Que dia lindo!"},{s:"B",en:"Yes! Let's go to the park.",pt:"Sim! Vamos ao parque."},{s:"A",en:"Bring a jacket, it might get cold later.",pt:"Leve casaco, pode esfriar."},{s:"B",en:"Good idea. I'll grab an umbrella too.",pt:"Boa. Vou pegar um guarda-chuva."}],
+feelings:[{s:"A",en:"I'm really stressed about work.",pt:"Muito estressado com o trabalho."},{s:"B",en:"I'm sorry to hear that.",pt:"Sinto muito."},{s:"A",en:"I just feel overwhelmed sometimes.",pt:"Às vezes me sinto sobrecarregado."},{s:"B",en:"Take a break. You deserve it.",pt:"Descanse. Você merece."}],
+tech:[{s:"A",en:"My phone is dead.",pt:"Meu celular morreu."},{s:"B",en:"You can borrow my charger.",pt:"Pode usar meu carregador."},{s:"A",en:"Thanks! What's the Wi-Fi password?",pt:"Obrigado! Qual a senha do Wi-Fi?"},{s:"B",en:"It's on the fridge.",pt:"Está na geladeira."}],
+hobbies:[{s:"A",en:"What do you do for fun?",pt:"O que faz pra se divertir?"},{s:"B",en:"I've been learning guitar.",pt:"Tenho aprendido violão."},{s:"A",en:"That's cool! I play soccer on Saturdays.",pt:"Legal! Jogo futebol aos sábados."},{s:"B",en:"We should hang out sometime!",pt:"Devíamos sair qualquer hora!"}],
+};
+
+const SITS={
+greetings:[{s:"You meet a neighbor in the morning.",h:"Cumprimente",good:["Good morning! How are you?"],kw:["morning","how"]}],
+daily:[{s:"You want to cook dinner together.",h:"Sugira",good:["Let's cook dinner together!"],kw:["cook","dinner","together"]}],
+food:[{s:"Your food arrived cold.",h:"Reclame educadamente",good:["Excuse me, my food is cold."],kw:["food","cold","excuse"]}],
+shopping:[{s:"These shoes don't fit. You want to exchange.",h:"Peça troca",good:["Can I exchange these for a bigger size?"],kw:["exchange","size","return"]}],
+travel:[{s:"You need to find a pharmacy nearby.",h:"Pergunte na rua",good:["Is there a pharmacy nearby?"],kw:["pharmacy","nearby","where"]}],
+work:[{s:"You need to postpone a meeting.",h:"Remarque",good:["Can we reschedule to tomorrow?"],kw:["reschedule","postpone","tomorrow"]}],
+opinions:[{s:"Friend recommends a movie you didn't like.",h:"Discorde educadamente",good:["To be honest, it wasn't my thing."],kw:["honest","think","rather"]}],
+storytelling:[{s:"Tell a friend about something funny that happened today.",h:"Conte uma história",good:["You won't believe what happened at work today!"],kw:["believe","happened","today"]}],
+social:[{s:"Invite a couple to dinner at your house.",h:"Convide para jantar",good:["Would you like to come over for dinner this Saturday?"],kw:["dinner","come","saturday","like"]}],
+phrasal:[{s:"Your friend wants to quit their hobby.",h:"Incentive",good:["Don't give up! Keep trying!"],kw:["give","up","keep","trying"]}],
+idioms:[{s:"Friend is nervous before a presentation.",h:"Deseje sorte",good:["Break a leg! You'll do great!"],kw:["break","leg","great"]}],
+fluency:[{s:"You disagree with your boss politely.",h:"Discorde formalmente",good:["I see your point, but I beg to differ."],kw:["beg","differ","point"]}],
+health:[{s:"You're at a doctor describing symptoms.",h:"Descreva",good:["I have a headache and a fever."],kw:["headache","fever","feel"]}],
+family:[{s:"Someone asks about your family.",h:"Descreva sua família",good:["I have two kids. My daughter is five."],kw:["kids","daughter","family"]}],
+weather:[{s:"You want to go to the beach but it might rain.",h:"Comente o tempo",good:["The forecast says it might rain later."],kw:["rain","forecast","weather"]}],
+feelings:[{s:"Your friend is sad. Comfort them.",h:"Console",good:["I'm sorry. I'm here for you."],kw:["sorry","here","feel"]}],
+tech:[{s:"Your internet is not working.",h:"Peça ajuda",good:["My internet is not working. Can you help?"],kw:["internet","working","help"]}],
+hobbies:[{s:"Someone asks what you like to do.",h:"Fale do seu hobby",good:["I love playing soccer on weekends!"],kw:["love","play","weekends"]}],
+};
+
+const STORIES=[
+{id:"s1",lv:"A1",title:"A New Day",pt:"Um Novo Dia",icon:"🌅",pars:[
+{t:"Maria wakes up at seven. She is tired but needs to go to work.",v:{"wakes up":"acorda","tired":"cansada","needs":"precisa","work":"trabalho"}},
+{t:"She makes coffee in the kitchen. The coffee is hot and good.",v:{"makes":"faz","kitchen":"cozinha","hot":"quente"}},
+{t:"\"Good morning!\" she says to her husband. \"I'm hungry. Let's eat breakfast.\"",v:{"says":"diz","husband":"marido","hungry":"com fome","breakfast":"café da manhã"}},
+{t:"They eat bread and cheese together. Then she says goodbye and goes to work.",v:{"bread":"pão","cheese":"queijo","together":"juntos","goodbye":"tchau"}},
+],qs:[{q:"What time does Maria wake up?",o:["Six","Seven","Eight"],c:1},{q:"What does she drink?",o:["Tea","Coffee","Juice"],c:1}]},
+{id:"s2",lv:"A2",title:"At the Store",pt:"Na Loja",icon:"🛒",pars:[
+{t:"Carlos goes to the supermarket to buy food for dinner tonight.",v:{"supermarket":"supermercado","buy":"comprar","dinner":"jantar","tonight":"hoje à noite"}},
+{t:"\"Excuse me, where is the pasta?\" he asks. \"Aisle three, on the right,\" she answers.",v:{"excuse me":"com licença","aisle":"corredor","right":"direita","answers":"responde"}},
+{t:"Carlos picks apples, milk, and pasta. He pays with his card at the checkout.",v:{"picks":"pega","pays":"paga","card":"cartão","checkout":"caixa"}},
+{t:"\"Thank you! Have a good day!\" he says and walks home happy.",v:{"walks":"caminha","happy":"feliz"}},
+],qs:[{q:"Why does Carlos go to the store?",o:["Buy clothes","Buy food","Meet friends"],c:1},{q:"How does he pay?",o:["Cash","Card","Check"],c:1}]},
+{id:"s3",lv:"B1",title:"The Interview",pt:"A Entrevista",icon:"💼",pars:[
+{t:"Lucas has an important job interview today. He puts on his best suit and arrives at the office early.",v:{"job interview":"entrevista","suit":"terno","arrives":"chega","office":"escritório","early":"cedo"}},
+{t:"The interviewer asks about his experience. Lucas takes a deep breath and answers confidently.",v:{"interviewer":"entrevistador","experience":"experiência","deep breath":"respiração profunda","confidently":"com confiança"}},
+{t:"After thirty minutes, they shake hands. \"We'll call you next week,\" the interviewer says with a smile.",v:{"shake hands":"apertam as mãos","next week":"semana que vem","smile":"sorriso"}},
+],qs:[{q:"How does Lucas feel?",o:["Bored","Nervous","Angry"],c:1},{q:"How long is the interview?",o:["10 min","30 min","1 hour"],c:1}]},
+{id:"s4",lv:"B2",title:"The Lost Tourist",pt:"O Turista Perdido",icon:"🗺️",pars:[
+{t:"James had been wandering through São Paulo for over an hour when he realized he was completely lost.",v:{"wandering":"vagando","realized":"percebeu","completely":"completamente","lost":"perdido"}},
+{t:"He approached a woman at a bus stop. She smiled warmly and gestured for him to follow her.",v:{"approached":"se aproximou","smiled":"sorriu","warmly":"calorosamente","gestured":"gesticulou","follow":"seguir"}},
+{t:"When they arrived at his hotel, James was incredibly grateful. Kindness needs no translation.",v:{"arrived":"chegaram","grateful":"grato","kindness":"gentileza","translation":"tradução"}},
+],qs:[{q:"Why is James lost?",o:["Wrong bus","He was wandering","Phone died"],c:1},{q:"What did he learn?",o:["Portuguese","Kindness needs no translation","How to read maps"],c:1}]},
+{id:"s5",lv:"C1",title:"The Lesson",pt:"A Lição",icon:"🎓",pars:[
+{t:"Professor Evans had been teaching for twenty years, yet a quiet student was about to challenge everything he thought he knew.",v:{"teaching":"ensinando","quiet":"tímida","challenge":"desafiar","thought":"pensava"}},
+{t:"She offered an unconventional interpretation that made the entire class fall silent. Rather than dismissing her view, he genuinely reconsidered.",v:{"unconventional":"não convencional","interpretation":"interpretação","fall silent":"ficou em silêncio","dismissing":"descartando","genuinely":"genuinamente"}},
+{t:"\"The day I stop learning from my students is the day I should retire,\" he told them with a humbled smile.",v:{"retire":"aposentar","humbled":"humilde"}},
+],qs:[{q:"What happened?",o:["A test","Student challenged professor","Fire drill"],c:1}]},
+{id:"s6",lv:"C2",title:"Weight of Words",pt:"Peso das Palavras",icon:"✒️",pars:[
+{t:"There's an inherent paradox in translation: the more faithfully one preserves meaning, the further one may drift from its essence.",v:{"inherent":"inerente","paradox":"paradoxo","faithfully":"fielmente","preserve":"preservar","drift":"desviar","essence":"essência"}},
+{t:"Elena spent weeks deliberating over a phrase that encapsulated the protagonist's bittersweet relationship with their homeland.",v:{"deliberating":"deliberando","encapsulated":"encapsulava","bittersweet":"agridoce","homeland":"terra natal"}},
+{t:"She left a translator's note acknowledging that some meanings transcend the boundaries of language.",v:{"acknowledging":"reconhecendo","transcend":"transcendem","boundaries":"fronteiras"}},
+],qs:[{q:"What is the paradox?",o:["Translation is easy","Faithful translation may miss essence","Languages are same"],c:1}]},
+{id:"s7",lv:"A1",title:"The Park",pt:"O Parque",icon:"🌳",pars:[
+{t:"Ana and Pedro go to the park on Saturday morning. The weather is beautiful.",v:{"park":"parque","Saturday":"sábado","weather":"tempo/clima","beautiful":"bonito/lindo"}},
+{t:"They sit on a bench and watch the birds. Pedro buys two ice creams.",v:{"sit":"sentam","bench":"banco","watch":"observam","birds":"pássaros","ice creams":"sorvetes","buys":"compra"}},
+{t:"\"This is the best part of the week!\" Ana says with a big smile.",v:{"best":"melhor","part":"parte","week":"semana","smile":"sorriso"}},
+],qs:[{q:"When do they go to the park?",o:["Sunday","Saturday","Friday"],c:1},{q:"What does Pedro buy?",o:["Coffee","Ice cream","Water"],c:1}]},
+{id:"s8",lv:"A2",title:"The Phone Call",pt:"A Ligação",icon:"📱",pars:[
+{t:"Maria receives a phone call from her old friend Carla. They haven't talked in months.",v:{"receives":"recebe","phone call":"ligação","old friend":"velha amiga","months":"meses"}},
+{t:"\"How have you been?\" Carla asks excitedly. \"I have great news! I'm getting married!\"",v:{"how have you been":"como você tem estado","excitedly":"animadamente","news":"notícias","getting married":"vou casar"}},
+{t:"Maria screams with joy. \"Congratulations! When is the wedding? I want to help with everything!\"",v:{"screams":"grita","joy":"alegria","congratulations":"parabéns","wedding":"casamento"}},
+{t:"They talk for two hours about dresses, flowers, and the guest list. Some friendships never change.",v:{"dresses":"vestidos","flowers":"flores","guest list":"lista de convidados","friendships":"amizades","change":"mudam"}},
+],qs:[{q:"What is Carla's news?",o:["New job","Getting married","Moving away"],c:1},{q:"How long do they talk?",o:["30 minutes","1 hour","2 hours"],c:2}]},
+{id:"s9",lv:"B1",title:"The Side Project",pt:"O Projeto Paralelo",icon:"💡",pars:[
+{t:"David had been working at the same company for five years. He liked his job, but something was missing.",v:{"company":"empresa","years":"anos","liked":"gostava","missing":"faltando"}},
+{t:"Every evening, he would spend two hours working on his own app. His wife thought he was crazy.",v:{"evening":"noite","spend":"gastar/passar","own":"próprio","app":"aplicativo","crazy":"louco"}},
+{t:"After six months of hard work, he launched the app. To his surprise, it got ten thousand downloads in the first week.",v:{"launched":"lançou","surprise":"surpresa","downloads":"downloads","first week":"primeira semana"}},
+{t:"One year later, David quit his job and works full-time on his project. \"Follow your passion,\" he always tells people.",v:{"quit":"largou","full-time":"tempo integral","passion":"paixão","always":"sempre"}},
+],qs:[{q:"How long did David work on the app?",o:["2 months","6 months","1 year"],c:1},{q:"What happened after he launched?",o:["Nothing","10k downloads in a week","He got fired"],c:1}]},
+{id:"s10",lv:"B2",title:"The Restaurant Disaster",pt:"O Desastre no Restaurante",icon:"😅",pars:[
+{t:"It was supposed to be a romantic dinner. Tom had booked the fanciest restaurant in town for their anniversary.",v:{"supposed to be":"era para ser","romantic":"romântico","booked":"reservou","fanciest":"mais chique","anniversary":"aniversário"}},
+{t:"Everything went wrong from the start. First, they gave away their table because Tom was fifteen minutes late.",v:{"went wrong":"deu errado","gave away":"deram","table":"mesa","late":"atrasado"}},
+{t:"Then he spilled red wine on his white shirt. The waiter brought the wrong dishes twice. And to top it all off, his credit card was declined.",v:{"spilled":"derramou","wine":"vinho","waiter":"garçom","wrong dishes":"pratos errados","twice":"duas vezes","declined":"recusado"}},
+{t:"His wife looked at him, burst out laughing, and said, \"This is the most memorable dinner we've ever had. I love you.\"",v:{"burst out laughing":"caiu na gargalhada","memorable":"memorável","ever had":"que já tivemos"}},
+],qs:[{q:"Why were they dining out?",o:["Birthday","Anniversary","Business"],c:1},{q:"How did his wife react?",o:["Got angry","Laughed","Cried"],c:1}]},
+{id:"s11",lv:"A1",title:"The Dog",pt:"O Cachorro",icon:"🐕",pars:[
+{t:"Pedro finds a small dog on the street. The dog is hungry and scared.",v:{"finds":"encontra","small":"pequeno","street":"rua","scared":"assustado"}},
+{t:"He gives the dog some food and water. The dog eats everything very fast.",v:{"gives":"dá","food":"comida","water":"água","eats":"come","fast":"rápido"}},
+{t:"Pedro takes the dog home. His wife Ana says, \"He's so cute! Can we keep him?\"",v:{"takes":"leva","home":"casa","cute":"fofo","keep":"ficar com"}},
+{t:"They name the dog Lucky. Now Lucky is part of the family. He sleeps on their bed every night.",v:{"name":"nomeiam","part":"parte","sleeps":"dorme","bed":"cama","every night":"toda noite"}},
+],qs:[{q:"Where does Pedro find the dog?",o:["Park","Street","Store"],c:1},{q:"What name do they give the dog?",o:["Max","Lucky","Buddy"],c:1}]},
+{id:"s12",lv:"A1",title:"First Day",pt:"Primeiro Dia",icon:"🏫",pars:[
+{t:"Today is Sara's first day at her new job. She wakes up very early because she doesn't want to be late.",v:{"first day":"primeiro dia","new job":"novo emprego","early":"cedo","late":"atrasada"}},
+{t:"She puts on nice clothes and eats a quick breakfast. She's nervous but also excited.",v:{"puts on":"veste","nice":"bonitas","quick":"rápido","nervous":"nervosa","excited":"animada"}},
+{t:"At the office, a friendly woman says, \"Hi! I'm Lisa. I'll show you around.\" Sara feels better immediately.",v:{"friendly":"simpática","show you around":"te mostrar o lugar","feels better":"se sente melhor","immediately":"imediatamente"}},
+{t:"At the end of the day, Sara calls her husband. \"It was amazing! Everyone is so nice. I love it here!\"",v:{"end":"fim","calls":"liga para","amazing":"incrível","everyone":"todos","nice":"legais"}},
+],qs:[{q:"How does Sara feel in the morning?",o:["Angry","Nervous but excited","Bored"],c:1},{q:"Who helps Sara at the office?",o:["Her boss","Lisa","Nobody"],c:1}]},
+{id:"s13",lv:"A2",title:"The Vacation",pt:"As Férias",icon:"🏖️",pars:[
+{t:"The Silva family is going on vacation to the beach. They pack their bags the night before and wake up at five in the morning.",v:{"vacation":"férias","beach":"praia","pack":"arrumam","bags":"malas","wake up":"acordam"}},
+{t:"The drive takes four hours. The children ask \"Are we there yet?\" every ten minutes. The parents laugh every time.",v:{"drive":"viagem de carro","takes":"leva","children":"crianças","ask":"perguntam","laugh":"riem"}},
+{t:"When they arrive, the kids run straight to the ocean. The water is warm and blue. They build sandcastles all afternoon.",v:{"arrive":"chegam","run":"correm","straight":"direto","ocean":"oceano","warm":"quentinha","sandcastles":"castelos de areia","afternoon":"tarde"}},
+{t:"At night, they eat fresh fish at a small restaurant by the sea. \"This is the best vacation ever,\" the little girl says.",v:{"fresh fish":"peixe fresco","small":"pequeno","by the sea":"à beira-mar","best":"melhor","ever":"de todas"}},
+],qs:[{q:"How long is the drive?",o:["2 hours","4 hours","6 hours"],c:1},{q:"What do the kids do at the beach?",o:["Sleep","Build sandcastles","Fish"],c:1}]},
+{id:"s14",lv:"A2",title:"The Cooking Lesson",pt:"Aula de Culinária",icon:"👩‍🍳",pars:[
+{t:"Ana decides to learn how to cook Italian food. She signs up for a cooking class at the community center.",v:{"decides":"decide","learn":"aprender","cook":"cozinhar","signs up":"se inscreve","cooking class":"aula de culinária","community center":"centro comunitário"}},
+{t:"The teacher, Chef Marco, shows them how to make fresh pasta from scratch. \"The secret is in the eggs,\" he says.",v:{"teacher":"professor","shows":"mostra","fresh":"fresco","from scratch":"do zero","secret":"segredo","eggs":"ovos"}},
+{t:"Ana makes many mistakes at first. Her pasta is too thick and her sauce is too salty. But Chef Marco is patient.",v:{"mistakes":"erros","at first":"no início","thick":"grossa","sauce":"molho","salty":"salgado","patient":"paciente"}},
+{t:"After three weeks of classes, Ana cooks a perfect dinner for her family. Her husband says it's better than any restaurant.",v:{"after":"depois de","weeks":"semanas","perfect":"perfeito","better than":"melhor que","any":"qualquer"}},
+],qs:[{q:"What kind of food does Ana learn?",o:["Japanese","Italian","Mexican"],c:1},{q:"What does Chef Marco say the secret is?",o:["The flour","The eggs","The water"],c:1}]},
+{id:"s15",lv:"B1",title:"The Neighbors",pt:"Os Vizinhos",icon:"🏘️",pars:[
+{t:"When the Oliveira family moved to their new apartment, they were worried about the neighbors. Their last building had been very noisy.",v:{"moved":"mudaram","apartment":"apartamento","worried":"preocupados","neighbors":"vizinhos","noisy":"barulhento"}},
+{t:"On the first night, they heard loud music from upstairs. \"Here we go again,\" Pedro sighed. But the next morning, there was a knock at the door.",v:{"heard":"ouviram","loud":"alta","upstairs":"de cima","sighed":"suspirou","knock":"batida","door":"porta"}},
+{t:"It was their upstairs neighbor, a young man named Daniel. \"I'm so sorry about last night! It was my birthday. It won't happen again.\"",v:{"upstairs neighbor":"vizinho de cima","sorry":"desculpe","birthday":"aniversário","happen again":"acontecer de novo"}},
+{t:"Over the next few months, Daniel became their closest friend. He would babysit their kids, share homemade meals, and help fix things around the house.",v:{"became":"se tornou","closest":"mais próximo","babysit":"cuidar das crianças","share":"compartilhar","homemade":"caseiro","fix":"consertar"}},
+{t:"Pedro often says, \"The best thing about our new apartment isn't the view or the space. It's having Daniel upstairs.\"",v:{"often":"frequentemente","best thing":"melhor coisa","view":"vista","space":"espaço","having":"ter"}},
+],qs:[{q:"What worried them about the new place?",o:["Price","Neighbors","Distance"],c:1},{q:"What happened with Daniel?",o:["They fought","He moved","They became friends"],c:2}]},
+{id:"s16",lv:"B1",title:"Learning to Drive",pt:"Aprendendo a Dirigir",icon:"🚗",pars:[
+{t:"At thirty-five, Marina decided it was finally time to learn how to drive. All her friends had been driving for years, and she was tired of depending on buses.",v:{"finally":"finalmente","time":"hora","learn":"aprender","drive":"dirigir","depending on":"depender de","buses":"ônibus"}},
+{t:"Her first lesson was a disaster. She confused the brake with the gas pedal and nearly hit a trash can. The instructor stayed calm somehow.",v:{"first lesson":"primeira aula","disaster":"desastre","confused":"confundiu","brake":"freio","gas pedal":"acelerador","nearly":"quase","hit":"bateu","trash can":"lixeira","instructor":"instrutor","calm":"calmo"}},
+{t:"After twenty lessons, she took the driving test. Her hands were shaking as she started the car. She failed the parallel parking but passed everything else.",v:{"took":"fez","driving test":"prova de direção","shaking":"tremendo","started":"ligou","failed":"reprovou","parallel parking":"baliza","passed":"passou"}},
+{t:"On her second attempt, she passed! She drove home alone for the first time and cried with happiness in the parking lot. Freedom at last.",v:{"second attempt":"segunda tentativa","drove":"dirigiu","alone":"sozinha","cried":"chorou","happiness":"felicidade","parking lot":"estacionamento","freedom":"liberdade","at last":"finalmente"}},
+],qs:[{q:"Why did Marina want to learn to drive?",o:["For work","Tired of buses","Husband asked"],c:1},{q:"Did she pass the first test?",o:["Yes","No, failed parking","No, failed everything"],c:1}]},
+{id:"s17",lv:"B2",title:"The Wrong Flight",pt:"O Voo Errado",icon:"✈️",pars:[
+{t:"It was supposed to be a quick business trip to Madrid. But when Ryan boarded the plane half-asleep at 5 AM, he didn't notice the gate had changed. He was on a flight to Marrakech.",v:{"supposed to be":"era para ser","business trip":"viagem de negócios","boarded":"embarcou","half-asleep":"meio dormindo","notice":"perceber","gate":"portão","changed":"mudou","flight":"voo"}},
+{t:"He only realized the mistake when the pilot announced, \"Welcome aboard our flight to Marrakech, Morocco.\" His heart dropped. His meeting was in four hours.",v:{"realized":"percebeu","mistake":"erro","pilot":"piloto","announced":"anunciou","heart dropped":"coração afundou","meeting":"reunião"}},
+{t:"After panicking for twenty minutes, he called his boss. To his surprise, she laughed and said, \"Take the day off. Explore the city. The meeting can wait until Monday.\"",v:{"panicking":"entrando em pânico","boss":"chefe","surprise":"surpresa","laughed":"riu","take the day off":"tire o dia de folga","explore":"explore","wait":"esperar"}},
+{t:"Ryan spent the most unexpected and wonderful day wandering through colorful markets, tasting incredible food, and talking to friendly strangers who taught him a few words in Arabic.",v:{"spent":"passou","unexpected":"inesperado","wonderful":"maravilhoso","wandering":"vagando","colorful":"coloridos","markets":"mercados","tasting":"provando","strangers":"estranhos","taught":"ensinaram"}},
+{t:"He returned home with a suitcase full of spices, a carpet he didn't need, and a story he would tell for the rest of his life.",v:{"returned":"voltou","suitcase":"mala","full of":"cheia de","spices":"especiarias","carpet":"tapete","rest of his life":"resto da vida"}},
+],qs:[{q:"Where was Ryan supposed to go?",o:["Marrakech","Madrid","Milan"],c:1},{q:"How did his boss react?",o:["Got angry","Laughed and gave him the day off","Fired him"],c:1}]},
+{id:"s18",lv:"B2",title:"The Old Letter",pt:"A Carta Antiga",icon:"💌",pars:[
+{t:"While cleaning the attic, Clara found a shoebox full of letters tied with a faded ribbon. They were love letters her grandfather had written to her grandmother during the war.",v:{"cleaning":"limpando","attic":"sótão","shoebox":"caixa de sapatos","letters":"cartas","tied":"amarradas","faded":"desbotada","ribbon":"fita","grandfather":"avô","grandmother":"avó","war":"guerra"}},
+{t:"She sat on the dusty floor and read each one carefully. His handwriting was elegant, and his words were full of hope, longing, and promises of a future together.",v:{"sat":"sentou","dusty":"empoeirado","carefully":"cuidadosamente","handwriting":"caligrafia","elegant":"elegante","hope":"esperança","longing":"saudade","promises":"promessas"}},
+{t:"In the last letter, dated just two days before the war ended, he wrote: \"I don't know what tomorrow holds, but I know that every tomorrow I have will be for you.\"",v:{"dated":"datada","ended":"acabou","wrote":"escreveu","tomorrow":"amanhã","holds":"reserva"}},
+{t:"Clara brought the letters downstairs to show her grandmother, now ninety-two years old. The old woman held them to her chest, closed her eyes, and whispered, \"He kept every promise.\"",v:{"brought":"trouxe","downstairs":"para baixo","show":"mostrar","held":"segurou","chest":"peito","closed":"fechou","whispered":"sussurrou","kept":"cumpriu","promise":"promessa"}},
+],qs:[{q:"Where did Clara find the letters?",o:["In a drawer","In the attic","At her grandmother's house"],c:1},{q:"What did the grandmother say?",o:["She forgot him","He kept every promise","She was angry"],c:1}]},
+];
+
+const EXAMS={
+A1:{pass:7,qs:[{q:"'Good morning' means:",o:["Boa noite","Bom dia","Boa tarde","Tchau"],c:1},{q:"Complete: I ___ hungry.",o:["is","am","are","be"],c:1},{q:"'Where is the bathroom?' means:",o:["Onde é o banheiro?","Que horas são?","Como vai?"],c:0},{q:"'See you later' means:",o:["Me veja","Até mais","Olhe aqui"],c:1},{q:"'The check, please' — when?",o:["Arriving","Ordering","Paying"],c:2},{q:"'I don't understand' means:",o:["Eu entendo","Não entendo","Eu preciso"],c:1},{q:"Which means 'água'?",o:["Water","Coffee","Milk"],c:0},{q:"'Can you help me?' means:",o:["Posso ajudar?","Pode me ajudar?","Onde está?"],c:1},{q:"'I'm tired' means:",o:["Com fome","Cansado","Feliz"],c:1},{q:"'Let's eat' means:",o:["Vamos dormir","Vamos comer","Vamos sair"],c:1}]},
+A2:{pass:7,qs:[{q:"'She ___ to work every day.'",o:["go","goes","going"],c:1},{q:"'I'd like to return this' means:",o:["Comprar","Devolver","Experimentar"],c:1},{q:"'How much is this?' asks about:",o:["Size","Price","Time"],c:1},{q:"'I ___ to the store yesterday.'",o:["go","went","going"],c:1},{q:"'Turn left at the corner' — corner:",o:["Corredor","Esquina","Semáforo"],c:1},{q:"Correct question?",o:["Where the station is?","Where is the station?","Is where station?"],c:1},{q:"'Can I try this on?' — where?",o:["Restaurant","Clothing store","Airport"],c:1},{q:"'Affordable' means:",o:["Caro","Acessível","Grande"],c:1},{q:"'He doesn't ___ coffee.'",o:["likes","like","liking"],c:1},{q:"'Pick me up' means:",o:["Me pegue/busque","Me levante","Me carregue"],c:0}]},
+B1:{pass:7,qs:[{q:"'If I ___ rich, I'd travel.'",o:["am","was","were"],c:2},{q:"'Looking forward to it' means:",o:["Olhando pra frente","Ansioso por isso","Procurando"],c:1},{q:"'I should have studied' expresses:",o:["Future","Regret","Habit"],c:1},{q:"'Deadline' means:",o:["Prazo final","Hora extra","Fila"],c:0},{q:"'I used to play guitar' means:",o:["Still play","Played regularly before","Will play"],c:1},{q:"'Run out of milk' means:",o:["Correr com leite","Ficar sem leite","Derramar leite"],c:1},{q:"'Figure out' means:",o:["Imaginar","Resolver/descobrir","Calcular"],c:1},{q:"'Meeting was postponed':",o:["Cancelled","Moved to later","Confirmed"],c:1},{q:"'Give up' means:",o:["Dar","Desistir","Subir"],c:1},{q:"'It depends' shows:",o:["Certainty","Nuance","Confusion"],c:1}]},
+B2:{pass:7,qs:[{q:"'She might have left' expresses:",o:["Certainty","Possibility","Obligation"],c:1},{q:"'Nevertheless' means:",o:["Therefore","However","Because"],c:1},{q:"'I'd rather you didn't' — wants:",o:["You to do it","You not to do it","Thinking about it"],c:1},{q:"'Had I known, I would've helped' is:",o:["First conditional","Third conditional","Zero conditional"],c:1},{q:"'I couldn't agree more' means:",o:["Disagree","Agree completely","Unsure"],c:1},{q:"'Whose car was stolen?' — 'whose' asks:",o:["Where","Possession","When"],c:1},{q:"'Not my cup of tea' means:",o:["Don't drink tea","Don't enjoy it","Prefer coffee"],c:1},{q:"'Mixed feelings' means:",o:["Happy","Contradictory emotions","Confused"],c:1},{q:"'On the same page' means:",o:["Reading together","In agreement","Same book"],c:1},{q:"'By a long shot' means:",o:["Barely","By far","Shooting"],c:1}]},
+C1:{pass:7,qs:[{q:"'Let the cat out of the bag':",o:["Released cat","Revealed secret","Made mistake"],c:1},{q:"'Hardly had I arrived when...':",o:["Informal","Inverted past perfect","Incorrect"],c:1},{q:"'Overthink' means:",o:["Pensar pouco","Pensar demais","Pensar rápido"],c:1},{q:"'I take it you're not coming' — 'I take it':",o:["I'm taking","I assume","I understand"],c:1},{q:"'Elephant in the room':",o:["Large animal","Obvious problem ignored","Surprise"],c:1},{q:"'Thrown in at the deep end':",o:["Went swimming","No preparation","Fell"],c:1},{q:"'By and large' means:",o:["Completely","Generally","Surprisingly"],c:1},{q:"'Didn't bat an eyelid':",o:["Didn't react","Blinked","Was surprised"],c:0},{q:"'Double-edged sword':",o:["Very sharp","Pros and cons","Dangerous"],c:1},{q:"'Beat around the bush':",o:["Hit a bush","Avoid being direct","Run in circles"],c:1}]},
+C2:{pass:7,qs:[{q:"'Nuances lost on the audience':",o:["Appreciated","Not understood","Created"],c:1},{q:"'Notwithstanding' means:",o:["Because of","Despite","Thanks to"],c:1},{q:"'Disingenuous' means:",o:["Honest","Insincere","Stupid"],c:1},{q:"'Tantamount to' means:",o:["Opposite of","Equivalent to","Better than"],c:1},{q:"'Uncanny ability':",o:["Normal","Remarkable","Weak"],c:1},{q:"'Riddled with errors':",o:["Free of","Full of","Almost without"],c:1},{q:"'Prevaricate':",o:["Avoid truth","Get angry","Apologize"],c:0},{q:"'Foregone conclusion':",o:["Unexpected","Predictable","Controversial"],c:1},{q:"'Acquiesced':",o:["Refused","Accepted reluctantly","Fought"],c:1},{q:"'Far-reaching implications':",o:["Distant","Wide effects","Minor"],c:1}]},
+};
+
+const POTD=[
+// A1
+{en:"I love spending time with you.",pt:"Amo passar tempo com você.",lv:"A1"},
+{en:"What do you want for dinner?",pt:"O que você quer para o jantar?",lv:"A1"},
+{en:"I'm so happy right now.",pt:"Estou tão feliz agora.",lv:"A1"},
+{en:"Can I have a glass of water?",pt:"Posso tomar um copo de água?",lv:"A1"},
+{en:"It's a beautiful day today.",pt:"Está um dia lindo hoje.",lv:"A1"},
+{en:"I need to buy some groceries.",pt:"Preciso comprar mantimentos.",lv:"A1"},
+{en:"Where did you put my phone?",pt:"Onde você colocou meu celular?",lv:"A1"},
+{en:"Let's watch a movie tonight.",pt:"Vamos assistir um filme hoje.",lv:"A1"},
+{en:"I'm sorry, I made a mistake.",pt:"Desculpa, cometi um erro.",lv:"A1"},
+{en:"The weather is really nice.",pt:"O tempo está muito bom.",lv:"A1"},
+// A2
+{en:"I've been thinking about you all day.",pt:"Pensei em você o dia inteiro.",lv:"A2"},
+{en:"Do you want me to pick you up?",pt:"Quer que eu te busque?",lv:"A2"},
+{en:"I need to charge my phone.",pt:"Preciso carregar meu celular.",lv:"A2"},
+{en:"We should go out more often.",pt:"Devíamos sair mais vezes.",lv:"A2"},
+{en:"I can't wait for the weekend!",pt:"Mal posso esperar o fim de semana!",lv:"A2"},
+{en:"How was your day at work?",pt:"Como foi seu dia no trabalho?",lv:"A2"},
+{en:"I'm running out of patience.",pt:"Estou perdendo a paciência.",lv:"A2"},
+{en:"Let me know if you need anything.",pt:"Me avise se precisar de algo.",lv:"A2"},
+{en:"That sounds like a great idea!",pt:"Parece uma ótima ideia!",lv:"A2"},
+{en:"I didn't sleep well last night.",pt:"Não dormi bem ontem.",lv:"A2"},
+// B1
+{en:"I should have told you earlier.",pt:"Devia ter te dito antes.",lv:"B1"},
+{en:"It's not a big deal, don't worry.",pt:"Não é nada demais, não se preocupe.",lv:"B1"},
+{en:"I've been working on this all week.",pt:"Estou trabalhando nisso a semana toda.",lv:"B1"},
+{en:"What would you do in my situation?",pt:"O que você faria na minha situação?",lv:"B1"},
+{en:"I'm not in the mood for cooking.",pt:"Não estou com vontade de cozinhar.",lv:"B1"},
+{en:"We need to figure this out together.",pt:"Precisamos resolver isso juntos.",lv:"B1"},
+{en:"I'd rather not talk about it now.",pt:"Prefiro não falar sobre isso agora.",lv:"B1"},
+{en:"Things are getting better every day.",pt:"As coisas estão melhorando a cada dia.",lv:"B1"},
+// B2
+{en:"I couldn't have done it without you.",pt:"Não teria conseguido sem você.",lv:"B2"},
+{en:"Let's not jump to conclusions.",pt:"Vamos não tirar conclusões precipitadas.",lv:"B2"},
+{en:"I've been meaning to ask you something.",pt:"Estava querendo te perguntar algo.",lv:"B2"},
+{en:"It's easier said than done.",pt:"É mais fácil falar do que fazer.",lv:"B2"},
+{en:"I see where you're coming from.",pt:"Entendo seu ponto de vista.",lv:"B2"},
+// C1
+{en:"I can't quite put my finger on it.",pt:"Não consigo identificar exatamente.",lv:"C1"},
+{en:"That really struck a chord with me.",pt:"Isso realmente tocou em mim.",lv:"C1"},
+{en:"We'll cross that bridge when we come to it.",pt:"Resolvemos isso quando chegar a hora.",lv:"C1"},
+{en:"She has a way with words.",pt:"Ela tem um jeito com as palavras.",lv:"C1"},
+// C2
+{en:"The writing is on the wall, if you ask me.",pt:"É inevitável, na minha opinião.",lv:"C2"},
+{en:"I'd be remiss not to mention the caveats.",pt:"Seria negligente não mencionar as ressalvas.",lv:"C2"},
+{en:"His nonchalance belied his inner turmoil.",pt:"Sua indiferença escondia sua turbulência interna.",lv:"C2"},
+// Extra A1
+{en:"I like this place a lot.",pt:"Gosto muito desse lugar.",lv:"A1"},
+{en:"Please close the door.",pt:"Feche a porta, por favor.",lv:"A1"},
+{en:"I don't like cold weather.",pt:"Não gosto de tempo frio.",lv:"A1"},
+{en:"This coffee is really good!",pt:"Esse café está muito bom!",lv:"A1"},
+{en:"I want to go home now.",pt:"Quero ir para casa agora.",lv:"A1"},
+{en:"Where are you going?",pt:"Para onde você está indo?",lv:"A1"},
+{en:"I'm learning English every day.",pt:"Estou aprendendo inglês todo dia.",lv:"A1"},
+{en:"Can you speak more slowly?",pt:"Pode falar mais devagar?",lv:"A1"},
+// Extra A2
+{en:"I'm thinking about changing jobs.",pt:"Estou pensando em mudar de emprego.",lv:"A2"},
+{en:"We had a great time yesterday.",pt:"Nos divertimos muito ontem.",lv:"A2"},
+{en:"I've never been to Europe.",pt:"Nunca fui à Europa.",lv:"A2"},
+{en:"She always makes me laugh.",pt:"Ela sempre me faz rir.",lv:"A2"},
+{en:"I usually wake up at seven.",pt:"Geralmente acordo às sete.",lv:"A2"},
+{en:"The movie was better than I expected.",pt:"O filme foi melhor do que esperava.",lv:"A2"},
+{en:"I'm saving money for a trip.",pt:"Estou economizando para uma viagem.",lv:"A2"},
+{en:"Do you want to go for a walk?",pt:"Quer ir dar uma caminhada?",lv:"A2"},
+// Extra B1
+{en:"I wish I had more free time.",pt:"Queria ter mais tempo livre.",lv:"B1"},
+{en:"Let's not overthink this.",pt:"Vamos não pensar demais nisso.",lv:"B1"},
+{en:"I'm getting used to the routine.",pt:"Estou me acostumando com a rotina.",lv:"B1"},
+{en:"He apologized for being late.",pt:"Ele pediu desculpas pelo atraso.",lv:"B1"},
+{en:"It took me a while to understand.",pt:"Demorei para entender.",lv:"B1"},
+{en:"I'm looking for a new apartment.",pt:"Estou procurando um apartamento novo.",lv:"B1"},
+{en:"We should have left earlier.",pt:"Devíamos ter saído mais cedo.",lv:"B1"},
+// Extra B2
+{en:"I never thought I'd enjoy cooking this much.",pt:"Nunca pensei que ia gostar tanto de cozinhar.",lv:"B2"},
+{en:"She has a way of making people feel welcome.",pt:"Ela tem um jeito de fazer as pessoas se sentirem bem-vindas.",lv:"B2"},
+{en:"I'm torn between the two options.",pt:"Estou dividido entre as duas opções.",lv:"B2"},
+{en:"It dawned on me that I was wrong.",pt:"Caiu a ficha de que eu estava errado.",lv:"B2"},
+{en:"He tends to exaggerate when telling stories.",pt:"Ele tende a exagerar quando conta histórias.",lv:"B2"},
+{en:"We hit it off right away.",pt:"Nos demos bem de cara.",lv:"B2"},
+{en:"I'd rather deal with it now than later.",pt:"Prefiro resolver agora do que depois.",lv:"B2"},
+];
+
+const IMMERSION={
+A1:{series:["Peppa Pig — vocabulário básico, frases curtas","Dora the Explorer — interativo, repete frases","Word Party (Netflix) — vocabulário do dia a dia"],podcast:["6 Minute English (BBC) — episódios curtos e claros","English Class 101 — bem devagar para iniciantes"],music:["'Hello' — Adele (vocabulário simples)","'Count on Me' — Bruno Mars (frases do dia a dia)","'Let It Be' — Beatles (frases curtas e repetitivas)"],youtube:["Rachel's English — pronúncia básica","English with Lucy — vocabulário do dia a dia","BBC Learning English — lições de 6 minutos"],tip:"Assista TUDO com legenda em PORTUGUÊS por enquanto. O objetivo é acostumar o ouvido ao som do inglês."},
+A2:{series:["Friends — vocabulário do dia a dia, humor simples","Extra English (YouTube) — feita para estudantes","The Good Place — frases claras e engraçadas"],podcast:["All Ears English — americano natural e lento","Culips — conversas reais simplificadas"],music:["'Perfect' — Ed Sheeran","'Someone Like You' — Adele","'Yellow' — Coldplay"],youtube:["English Addict with Mr Duncan — divertido","SmallAdvantages — brasileiro que ensina inglês","EngVid — gramática sem complicação"],tip:"MUDE a legenda para INGLÊS. Você vai estranhar no início, mas é assim que o cérebro começa a conectar som + escrita."},
+B1:{series:["The Office — humor real, vocabulário de trabalho","Brooklyn Nine-Nine — gírias modernas","Stranger Things — contextos variados"],podcast:["TED Talks Daily — ideias em inglês acessível","The Daily (NYT) — notícias em inglês claro","Luke's English Podcast — britânico divertido"],music:["'Hotel California' — Eagles (história)","'Bohemian Rhapsody' — Queen (vocabulário rico)","Ouça a LETRA enquanto ouve. Procure no Google: 'lyrics + nome da música'"],youtube:["TED-Ed — animações educativas","Vox — documentários curtos","English with Greg — phrasal verbs"],tip:"Tente assistir SEM legenda por 5 minutos, depois coloque legenda em inglês. Aumente o tempo sem legenda aos poucos."},
+B2:{series:["Black Mirror — vocabulário sofisticado","The Crown — inglês britânico elegante","Breaking Bad — diálogos complexos"],podcast:["Freakonomics Radio — vocabulário avançado","Radiolab — histórias fascinantes","Stuff You Should Know — explicações detalhadas"],music:["Ouça discografias inteiras. Tente entender sem ler a letra primeiro.","Cante junto! Karaokê em inglês treina fluência."],youtube:["Kurzgesagt — ciência em inglês","Philosophy Tube — ideias complexas","Veritasium — ciência e explicações"],tip:"TIRE as legendas. Você vai perder algumas palavras — tudo bem! É assim que o ouvido se adapta. Reassista cenas que não entendeu."},
+C1:{series:["Succession — linguagem corporativa sofisticada","True Detective — diálogos densos","Peaky Blinders — sotaque + gírias"],podcast:["Lex Fridman — conversas profundas","The Joe Rogan Experience — inglês natural","Hardcore History — vocabulário riquíssimo"],music:["Ouça audiobooks! Comece com ficção que você já leu em português.","Podcasts de comédia: treina entender humor e sarcasmo."],youtube:["Charisma on Command — comunicação","ContraPoints — argumentação sofisticada"],tip:"Comece a CONSUMIR conteúdo em inglês como primeira opção. Notícias, redes sociais, tudo em inglês. Faça do inglês seu idioma padrão na internet."},
+C2:{series:["Assista QUALQUER coisa que te interesse. Você não precisa mais de 'séries para aprender'. Assista o que um nativo assistiria."],podcast:["Ouça sobre SEUS interesses em inglês. O conteúdo não importa — a imersão sim."],music:["Escreva suas próprias letras/poemas em inglês. A produção criativa é o teste final."],youtube:["Crie conteúdo em inglês. Grave vídeos, escreva posts, comente em fóruns."],tip:"Você está quase lá. O último passo é PENSAR em inglês. Quando sonhar em inglês, chegou."},
+};
+
+const LEVELS=[
+{id:"A1",pt:"Iniciante",xpMin:0,xpMax:500,color:"#8b5cf6",emoji:"🌱",desc:"Frases básicas"},
+{id:"A2",pt:"Básico",xpMin:500,xpMax:1500,color:"#6366f1",emoji:"🌿",desc:"Conversas simples"},
+{id:"B1",pt:"Intermediário",xpMin:1500,xpMax:3500,color:"#3b82f6",emoji:"🌳",desc:"Opinião e planos"},
+{id:"B2",pt:"Inter.+",xpMin:3500,xpMax:7000,color:"#f59e0b",emoji:"⭐",desc:"Conversas naturais"},
+{id:"C1",pt:"Avançado",xpMin:7000,xpMax:13000,color:"#10b981",emoji:"💎",desc:"Nuances e humor"},
+{id:"C2",pt:"Fluente",xpMin:13000,xpMax:25000,color:"#ec4899",emoji:"👑",desc:"Domínio total"},
+];
+
+const MISSIONS=[{id:"m1",icon:"📚",t:"Revisar 5 cards",ck:d=>(d.cards||0)>=5,xp:30},{id:"m2",icon:"🧩",t:"1 quiz",ck:d=>(d.quizzes||0)>=1,xp:25},{id:"m3",icon:"📖",t:"1 história",ck:d=>(d.stories||0)>=1,xp:35},{id:"m4",icon:"💬",t:"3 msgs chat",ck:d=>(d.chats||0)>=3,xp:30},{id:"m5",icon:"🎧",t:"1 ditado",ck:d=>(d.dicts||0)>=1,xp:30},{id:"m6",icon:"🎤",t:"Falar 3 frases",ck:d=>(d.speaks||0)>=3,xp:35}];
+
+const ACHS=[{id:"a1",icon:"🎯",t:"Primeiro Passo",d:"1 card",ck:s=>s.rev>=1},{id:"a2",icon:"📚",t:"Estudioso",d:"50 cards",ck:s=>s.rev>=50},{id:"a3",icon:"🔥",t:"Em Chamas",d:"3 dias",ck:s=>s.streak>=3},{id:"a4",icon:"💥",t:"Imparável",d:"7 dias",ck:s=>s.streak>=7},{id:"a5",icon:"📖",t:"Leitor",d:"3 histórias",ck:s=>s.stories>=3},{id:"a6",icon:"🌿",t:"A2!",d:"Nível A2",ck:s=>s.xp>=500},{id:"a7",icon:"🌳",t:"B1!",ck:s=>s.xp>=1500,d:"Nível B1"},{id:"a8",icon:"⭐",t:"B2!",ck:s=>s.xp>=3500,d:"Nível B2"},{id:"a9",icon:"💎",t:"C1!",ck:s=>s.xp>=7000,d:"Nível C1"},{id:"a10",icon:"👑",t:"Fluente!",ck:s=>s.xp>=13000,d:"Nível C2"},{id:"a11",icon:"🏆",t:"Mestre",d:"200 cards",ck:s=>s.rev>=200}];
+
+const PLACEMENT=[{q:"'Oi' in English:",o:["Hi","Bye","Help","Run"],c:0,lv:"A1"},{q:"I ___ hungry.",o:["is","am","are"],c:1,lv:"A1"},{q:"'Where is the bathroom?':",o:["Onde é o banheiro?","Que horas são?","Como vai?"],c:0,lv:"A1"},{q:"She ___ to work.",o:["go","goes","going"],c:1,lv:"A2"},{q:"'Looking forward to it':",o:["Olhando","Ansioso","Procurando"],c:1,lv:"B1"},{q:"'If I ___ rich...'",o:["am","was","were"],c:2,lv:"B1"},{q:"'She might have left':",o:["Certainty","Possibility","Obligation"],c:1,lv:"B2"},{q:"'Nevertheless':",o:["Therefore","However","Because"],c:1,lv:"B2"},{q:"'Let the cat out of the bag':",o:["Soltou gato","Revelou segredo","Ficou bravo"],c:1,lv:"C1"},{q:"'Nuances lost on audience':",o:["Appreciated","Not understood","Repeated"],c:1,lv:"C2"}];
+
+const TIPS=["🧠 Imagem, não tradução. 'Dog'=🐕","🗣️ Narre sua vida em inglês","📦 Frases inteiras, não palavras","📱 Celular em inglês!","🎯 3 frases/dia=90/mês","💪 Errar é aprender!","📺 Séries+legenda em INGLÊS","🪞 Shadowing: ouça→repita","📝 Diário: 3 frases/dia","❤️ Não traduza. SINTA!"];
+
+for(const k in V){V[k].dlg=DLGS[k]||[];V[k].sit=SITS[k]||[];}
+
+// ═══════ HELPERS ═══════
+var getLevel=function(xp){for(var i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].xpMin)return LEVELS[i];return LEVELS[0]};
+var getLvPct=function(xp){var l=getLevel(xp);return Math.min(((xp-l.xpMin)/(l.xpMax-l.xpMin))*100,100)};
+var lvI=function(id){return LEVELS.findIndex(function(l){return l.id===id})};
+
+var MOTIVATIONS=["Você tá arrasando! 🔥","Não para! 💪","Orgulho de vocês! 🌟","Cada dia melhor! 📈","Rumo ao B2! 🚀","Fluência vem vindo! ✨","Casal poliglota! 👫","Inglês na veia! 💜"];
+function getRandMotivation(){return MOTIVATIONS[Math.floor(Math.random()*MOTIVATIONS.length)];}
+
+// ═══════ SOUND EFFECTS (Web Audio API) ═══════
+var audioCtx=null;
+function getAudio(){if(!audioCtx)try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}return audioCtx;}
+function playTone(freq,dur,type){var ctx=getAudio();if(!ctx)return;var o=ctx.createOscillator();var g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type=type||'sine';o.frequency.value=freq;g.gain.value=0.15;o.start();g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+(dur||0.2));o.stop(ctx.currentTime+(dur||0.2));}
+function sfxCorrect(){playTone(523,.1);setTimeout(function(){playTone(659,.1)},100);setTimeout(function(){playTone(784,.15)},200);}
+function sfxWrong(){playTone(200,.15,'square');setTimeout(function(){playTone(150,.2,'square')},150);}
+function sfxLevelUp(){[523,659,784,1047].forEach(function(f,i){setTimeout(function(){playTone(f,.15)},i*120)});}
+function sfxClick(){playTone(800,.05);}
+function sfxComplete(){[784,988,1175].forEach(function(f,i){setTimeout(function(){playTone(f,.12)},i*100)});}
+
+// ═══════ CONFETTI ═══════
+function confetti(){var c=document.createElement('div');c.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:300;overflow:hidden';
+var colors=['#6C63FF','#FF6B6B','#4ECDC4','#FFE66D','#FF8A65','#AB47BC','#42A5F5'];
+for(var i=0;i<40;i++){var p=document.createElement('div');var col=colors[Math.floor(Math.random()*colors.length)];var sz=Math.random()*10+6;var x=Math.random()*100;var delay=Math.random()*0.5;
+p.style.cssText='position:absolute;top:-20px;left:'+x+'%;width:'+sz+'px;height:'+sz+'px;background:'+col+';border-radius:'+(Math.random()>.5?'50%':'2px')+';animation:confettiDrop '+(1.5+Math.random())+'s ease '+delay+'s forwards;opacity:0.9';
+c.appendChild(p);}
+document.body.appendChild(c);setTimeout(function(){c.remove()},3000);}
+
+// ═══════ LIVES (HEARTS) ═══════
+var MAX_LIVES=5;
+function getLives(){var d=S.daily||{};if(d.lives===undefined)return MAX_LIVES;return d.lives;}
+function setLives(n){S.daily.lives=Math.max(0,Math.min(MAX_LIVES,n));save();}
+function loseLife(){var l=getLives();if(l>0){setLives(l-1);sfxWrong();}return getLives();}
+function gainLife(){var l=getLives();if(l<MAX_LIVES)setLives(l+1);return getLives();}
+function heartsHTML(){var l=getLives();var h='';for(var i=0;i<MAX_LIVES;i++){h+=i<l?'<span style="font-size:20px;filter:none">❤️</span>':'<span style="font-size:20px;filter:grayscale(1);opacity:.3">❤️</span>';}return'<div class="fx" style="justify-content:center;gap:2px;margin-bottom:8px">'+h+'</div>';}
+function noLivesHTML(){return'<div class="tc" style="padding:40px"><div style="font-size:56px;animation:bounce 1s infinite">💔</div><h3 style="margin:12px 0;color:#e53e3e">Sem vidas!</h3><p style="color:#718096;font-size:13px;margin-bottom:16px">Revise flashcards para ganhar vidas de volta,<br>ou espere até amanhã!</p><button class="btn bp" style="margin-bottom:8px" onclick="S.mode=\'learn\';S.queue=V[S.topic].cards.slice(0,5);S.idx=0;S.showAns=false;go(\'learn\')">📚 Revisar (ganhar ❤️)</button><button class="btn bg" onclick="go(\'topicMenu\')">← Voltar</button></div>';}
+
+function getDailyPhrases(){var lv=getLevel(S.xp).id;var li=lvI(lv);var available=POTD.filter(function(p){return lvI(p.lv)<=li});var seed=new Date().toDateString();var h=0;for(var i=0;i<seed.length;i++){h=((h<<5)-h)+seed.charCodeAt(i);h|=0;}var shuffled=available.slice().sort(function(a,b){return((h*31+a.en.length)|0)%1000-((h*31+b.en.length)|0)%1000});return shuffled.slice(0,3);}
+
+function getDailyPlan(){var d=S.daily||{};return[
+{done:(d.cards||0)>=5,icon:(d.cards||0)>=5?'✅':'📚',text:'Revisar 5 flashcards',time:'~5 min',action:"go('topics')"},
+{done:(d.dicts||0)>=1,icon:(d.dicts||0)>=1?'✅':'🎧',text:'Fazer 1 ditado',time:'~5 min',action:"go('topics')"},
+{done:(d.speaks||0)>=3,icon:(d.speaks||0)>=3?'✅':'🎤',text:'Falar 3 frases',time:'~5 min',action:"go('topics')"},
+{done:(d.stories||0)>=1,icon:(d.stories||0)>=1?'✅':'📖',text:'Ler 1 história',time:'~5 min',action:"go('stories')"},
+{done:(d.chats||0)>=3,icon:(d.chats||0)>=3?'✅':'💬',text:'Chat IA (3+ msgs)',time:'~10 min',action:"startChat()"},
+{done:!!d.immersionDone,icon:d.immersionDone?'✅':'🎬',text:'Imersão: série/podcast',time:'30-60 min',action:"markDone('imm')"},
+{done:!!d.phrasesDone,icon:d.phrasesDone?'✅':'💡',text:'Usar 3 Frases do Dia',time:'o dia todo',action:"markDone('phr')"},
+];}
+
+// ═══════ STATE ═══════
+var S={scr:'loading',name:'',xp:0,srs:{},streak:1,rev:0,storiesR:0,chatCount:0,achs:[],daily:{},claimed:[],gemKey:'',placed:false,exPassed:[],
+topic:null,mode:null,queue:[],idx:0,showAns:false,quizSt:null,quizSc:{c:0,t:0},fb:null,input:'',dStep:0,dPt:false,
+chatMsgs:[],chatIn:'',chatLd:false,stId:null,stStep:0,stV:{},stShowQ:false,stQI:0,stQS:0,pIdx:0,pSc:0,eIdx:0,eSc:0,eLv:null,
+scrWords:[],scrSel:[],spResult:null,tutStep:0};
+
+function load(){try{var d=localStorage.getItem('ft4');if(d){var p=JSON.parse(d);for(var k in p)S[k]=p[k];var t=new Date().toDateString();if(p.lastLogin&&p.lastLogin!==t){var diff=Math.floor((new Date(t)-new Date(p.lastLogin))/864e5);S.streak=diff>1?1:(S.streak||0)+1;S.daily={};S.claimed=[];}S.scr=S.placed?'home':'welcome';}else{S.scr='welcome';}}catch(e){S.scr='welcome';}}
+
+function save(){try{localStorage.setItem('ft4',JSON.stringify({name:S.name,xp:S.xp,srs:S.srs,streak:S.streak,rev:S.rev,storiesR:S.storiesR,chatCount:S.chatCount,achs:S.achs,daily:S.daily,claimed:S.claimed,gemKey:S.gemKey,placed:S.placed,exPassed:S.exPassed||[],lastLogin:new Date().toDateString()}));}catch(e){}}
+
+function addXp(n){var o=getLevel(S.xp);S.xp+=n;save();var el=document.getElementById('xp-pop');el.textContent='+'+n+' XP ✨';el.style.display='block';el.style.animation='none';el.offsetHeight;el.style.animation='popUp 1.5s ease forwards';setTimeout(function(){el.style.display='none'},1600);var nw=getLevel(S.xp);if(nw.id!==o.id){showLevelUp(nw);}checkAchs();}
+
+function showLevelUp(lv){sfxLevelUp();confetti();var el=document.getElementById('lvup');el.innerHTML='<div class="tc" style="animation:si .5s;background:#fff;border-radius:24px;padding:40px 30px;margin:20px;box-shadow:0 20px 60px rgba(0,0,0,.2)"><div style="font-size:80px;animation:bounce 1s infinite">'+lv.emoji+'</div><h2 style="color:'+lv.color+';margin:12px 0;font-size:28px">LEVEL UP!</h2><div style="font-size:22px;font-weight:700">Nível '+lv.id+'!</div><div style="color:#718096;margin:4px 0 8px">'+lv.pt+'</div><div style="font-size:14px;color:#a0aec0">'+getRandMotivation()+'</div><button class="btn bp" style="margin-top:20px;width:auto;padding:14px 40px" onclick="document.getElementById(\'lvup\').style.display=\'none\'">🎉 Bora!</button></div>';el.style.display='flex';}
+
+function checkAchs(){var st={xp:S.xp,rev:S.rev,streak:S.streak,stories:S.storiesR,chats:S.chatCount};ACHS.forEach(function(a){if(S.achs.indexOf(a.id)===-1&&a.ck(st)){S.achs.push(a.id);save();var el=document.getElementById('ach-t');el.innerHTML='<span style="font-size:32px;animation:bounce .5s">'+a.icon+'</span><div><div style="font-size:11px;color:#d97706;font-weight:700;text-transform:uppercase">🎉 Conquista!</div><div style="font-size:15px;font-weight:800">'+a.t+'</div></div>';el.style.display='flex';el.style.animation='none';el.offsetHeight;el.style.animation='sd 2.5s ease forwards';setTimeout(function(){el.style.display='none'},2600);}});}
+
+function updSrs(id,ok){var c=S.srs[id]||{box:0};S.srs[id]={box:ok?Math.min(c.box+1,5):Math.max(c.box-1,0),last:Date.now()};S.rev++;S.daily.cards=(S.daily.cards||0)+1;save();if(ok){sfxCorrect();gainLife();}addXp(ok?10:5);}
+function mastered(k){return V[k].cards.filter(function(c){return(S.srs[c.id]&&S.srs[c.id].box>=4)||false}).length;}
+function markDone(type){if(type==='imm'){S.daily.immersionDone=true;save();addXp(20);}if(type==='phr'){S.daily.phrasesDone=true;save();addXp(15);}sfxComplete();render();}
+
+// ═══════ RENDER ═══════
+var $=function(id){return document.getElementById(id)};
+function R(h){$('app').innerHTML=h;}
+function esc(t){return t.replace(/'/g,"\\'");}
+function lb(t,cls,slow){return '<button class="lb '+(cls||'')+'" onclick="event.stopPropagation();'+(slow?'saySlow':'say')+"('"+esc(t)+"')\">"+(slow?'🐢 Devagar':'🔊 Ouvir')+'</button>';}
+function pb(v,mx,cl){return '<div class="pb"><div class="pbf" style="width:'+Math.min(v/mx*100,100)+'%;background:'+(cl||'#6C63FF')+'"></div></div>';}
+
+function render(){
+var screens={loading:rLoading,welcome:rWelcome,placement:rPlacement,tutorial:rTutorial,home:rHome,topics:rTopics,topicMenu:rTMenu,
+learn:rLearn,quiz:rQuiz,dictation:rDictation,scramble:rScramble,speak:rSpeak,dialogue:rDialogue,speed:rSpeed,memory:rMemory,
+stories:rStories,story:rStory,aichat:rChat,achs:rAchs,settings:rSettings,exam:rExam,immersion:rImmersion,roadmap:rRoadmap};
+var fn=screens[S.scr]||rHome;
+try{fn();}catch(e){R('<div class="cd tc" style="margin:40px 0;padding:30px"><h3>⚠️ Erro</h3><p style="color:#718096;margin:8px 0">'+e.message+'</p><button class="btn bp" style="margin-top:12px" onclick="go(\'home\')">Voltar</button></div>');console.error(e);}
+}
+function go(s){S.scr=s;render();}
+
+function rLoading(){R('<div class="tc" style="padding:80px"><div style="font-size:48px;animation:bounce 1s infinite">🇺🇸🇧🇷</div><p style="color:#a0aec0;margin-top:12px">Carregando...</p></div>');}
+
+function rWelcome(){R('<div class="tc" style="padding-top:30px;margin-bottom:28px">'+
+'<div style="font-size:64px;margin-bottom:8px;animation:bounce 2s infinite">🇺🇸🇧🇷</div>'+
+'<h1 style="font-size:32px;color:#6C63FF">FluenTogether</h1>'+
+'<p style="color:#a0aec0;font-size:14px;margin-top:4px">Fluência no inglês, juntos! 💜</p></div>'+
+'<div style="font-size:13px;color:#718096;font-weight:700;margin-bottom:8px">SEU NOME:</div>'+
+'<input id="ni" value="'+S.name+'" placeholder="Digite seu nome" style="margin-bottom:16px">'+
+'<button class="btn bp" onclick="S.name=document.getElementById(\'ni\').value.trim();if(!S.name){alert(\'Digite seu nome!\');return;}S.pIdx=0;S.pSc=0;go(\'placement\')">Começar! 🚀</button>'+
+'<div style="margin-top:20px;padding:16px;background:#f0fff4;border:2px solid #c6f6d5;border-radius:16px;font-size:13px;color:#38a169;line-height:1.6">'+
+'💪 <strong>Meta:</strong> B2 em 2 anos! Vocês conseguem com ~1h30 por dia de prática.</div>');}
+
+function rPlacement(){
+if(S.pIdx>=PLACEMENT.length){
+var lv='A1';if(S.pSc>=9)lv='C2';else if(S.pSc>=8)lv='C1';else if(S.pSc>=6)lv='B2';else if(S.pSc>=4)lv='B1';else if(S.pSc>=2)lv='A2';
+var l=LEVELS.find(function(x){return x.id===lv});S.xp=l.xpMin;S.placed=true;S.exPassed=[];for(var i=0;i<lvI(lv);i++)S.exPassed.push(LEVELS[i].id);save();
+R('<div class="tc" style="padding:32px"><div style="font-size:72px;animation:bounce 1s infinite">'+l.emoji+'</div><h2 style="margin:12px 0;color:'+l.color+'">Nível: '+l.id+'</h2><div style="font-size:16px;font-weight:700;color:#718096">'+l.pt+'</div><p style="color:#a0aec0;font-size:13px;margin:8px 0">'+S.pSc+'/'+PLACEMENT.length+' corretas</p><div style="background:#f0fff4;border-radius:14px;padding:12px;margin:12px 0;font-size:13px;color:#38a169">'+getRandMotivation()+'</div><button class="btn bp" style="margin-top:12px" onclick="go(\'tutorial\')">Vamos lá! 🚀</button></div>');return;}
+var q=PLACEMENT[S.pIdx];
+R('<div class="fx" style="margin-bottom:16px">'+pb(S.pIdx,PLACEMENT.length)+'<span style="font-size:12px;color:#a0aec0">'+((S.pIdx+1)+'/'+PLACEMENT.length)+'</span></div>'+
+'<div class="cd" style="margin-bottom:12px"><span class="bs" style="background:#ebf4ff;color:#6C63FF;border:1px solid #c3dafe;margin-bottom:8px;display:inline-block">'+q.lv+'</span><div style="font-size:17px;font-weight:700;margin-top:6px">'+q.q+'</div></div>'+
+'<div class="fc">'+q.o.map(function(o,i){return'<button class="btn bg" style="justify-content:flex-start;font-size:14px" onclick="placementAns('+i+')">'+o+'</button>'}).join('')+'</div>');
+}
+function placementAns(i){if(i===PLACEMENT[S.pIdx].c)S.pSc++;S.pIdx++;render();}
+
+// ═══════ TUTORIAL ═══════
+var TUTORIAL_STEPS=[
+{emoji:'🎉',title:'Bem-vindos ao FluenTogether!',text:'Este app foi feito para vocês dois aprenderem inglês juntos até ficarem fluentes. Vamos ver como funciona!'},
+{emoji:'📋',title:'Plano do Dia',text:'Todo dia, ao abrir o app, vocês veem EXATAMENTE o que fazer. São ~1h30 divididos em tarefas curtas. Sigam o plano e marquem cada item!'},
+{emoji:'📚',title:'Flashcards (SRS)',text:'Frases com áudio para memorizar. Toque no card, ouça, repita em voz alta. Diga se lembrou ou não — o app vai repetir as difíceis mais vezes. É o sistema Anki!'},
+{emoji:'🎧',title:'Ditado',text:'Ouça a frase em inglês e ESCREVA o que ouviu. Treina seu ouvido como nada mais! Tem velocidade normal e devagar 🐢.'},
+{emoji:'🔀',title:'Montar Frase',text:'As palavras aparecem embaralhadas. Toque nelas na ordem certa para montar a frase. Seu cérebro absorve a estrutura do inglês naturalmente!'},
+{emoji:'🎤',title:'Falar',text:'Ouça a frase, aperte o microfone e FALE! O app avalia sua pronúncia e dá uma nota. Não tenha medo de errar!'},
+{emoji:'⚡',title:'Modo Velocidade',text:'Quiz contra o relógio! 10 segundos por pergunta. Erra = perde um ❤️. Acabou os corações = game over! É viciante!'},
+{emoji:'🃏',title:'Jogo da Memória',text:'Vire as cartas e encontre os pares inglês↔português. Parece brincadeira, mas está decorando vocabulário!'},
+{emoji:'📖',title:'Histórias',text:'Leia histórias em inglês do seu nível. Toque nas palavras coloridas para ouvir e adicionar ao seu Anki automaticamente!'},
+{emoji:'🤖',title:'Chat com IA',text:'Converse em inglês com a inteligência artificial! Ela se adapta ao seu nível e corrige seus erros gentilmente. Configure a API key grátis em ⚙️.'},
+{emoji:'🎬',title:'Guia de Imersão',text:'O app recomenda séries, podcasts, músicas e canais do YouTube para seu nível. Essa é a parte mais importante — 30 min/dia de imersão!'},
+{emoji:'💡',title:'3 Frases do Dia',text:'Todo dia, 3 frases novas aparecem na tela inicial. O objetivo: USEM entre vocês durante o dia! É assim que as frases viram naturais.'},
+{emoji:'🎓',title:'Provas de Nível',text:'Quando dominarem o conteúdo do nível, façam a prova para subir! A1→A2→B1→B2. A meta é B2 em 2 anos! 🚀'},
+{emoji:'🔥',title:'Dica Final',text:'O segredo não é estudar muito em um dia. É estudar TODO DIA, sem pular. O streak 🔥 conta os dias seguidos. Não deixem ele zerar! Vocês conseguem! 💜'},
+];
+
+function rTutorial(){
+var step=S.tutStep||0;
+if(step>=TUTORIAL_STEPS.length){go('home');return;}
+var t=TUTORIAL_STEPS[step];
+R('<div class="tc" style="padding:20px 0">'+
+'<div class="fx" style="justify-content:center;margin-bottom:16px">'+pb(step+1,TUTORIAL_STEPS.length,'#6C63FF')+'<span style="font-size:12px;color:#a0aec0;margin-left:8px">'+(step+1)+'/'+TUTORIAL_STEPS.length+'</span></div>'+
+'<div style="font-size:64px;margin-bottom:12px;animation:bounce 1s infinite">'+t.emoji+'</div>'+
+'<h2 style="font-size:22px;color:#2d3748;margin-bottom:12px">'+t.title+'</h2>'+
+'<div style="background:#fff;border:2px solid #e2e8f0;border-radius:18px;padding:20px;margin-bottom:20px;font-size:15px;color:#4a5568;line-height:1.7;text-align:left">'+t.text+'</div>'+
+'<div class="fx" style="justify-content:center;gap:10px">'+
+(step>0?'<button class="btn bg" style="width:auto;padding:12px 24px" onclick="S.tutStep--;render()">← Voltar</button>':'')+
+'<button class="btn bp" style="width:auto;padding:12px 40px" onclick="S.tutStep='+(step+1)+';render()">'+(step<TUTORIAL_STEPS.length-1?'Próximo →':'Começar! 🚀')+'</button></div>'+
+'<button class="btn bg bs" style="margin-top:16px;color:#a0aec0" onclick="go(\'home\')">Pular tutorial</button></div>');
+}
+
+function rHome(){
+var lv=getLevel(S.xp);var done=MISSIONS.filter(function(m){return m.ck(S.daily)});var plan=getDailyPlan();var planDone=plan.filter(function(s){return s.done}).length;
+R('<div class="fx" style="justify-content:space-between;margin-bottom:16px"><div><div style="font-size:13px;color:#a0aec0">Olá,</div><div style="font-size:22px;font-weight:900;color:#2d3748">'+S.name+' 👋</div></div><div class="fx"><button class="btn bg bs" style="width:auto" onclick="S.tutStep=0;go(\'tutorial\')">❓</button><button class="btn bg bs" style="width:auto" onclick="go(\'settings\')">⚙️</button></div></div>'+
+
+'<div style="background:linear-gradient(135deg,'+lv.color+','+lv.color+'cc);color:#fff;border-radius:20px;padding:18px 20px;margin-bottom:14px;position:relative;overflow:hidden">'+
+'<div class="emoji-bg">'+lv.emoji+'</div>'+
+'<div class="fx" style="justify-content:space-between;margin-bottom:8px"><div class="fx"><span style="font-size:28px">'+lv.emoji+'</span><div><div style="font-size:20px;font-weight:900">'+lv.id+'</div><div style="font-size:11px;opacity:.8">'+lv.pt+'</div></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:900">'+S.xp+'</div><div style="font-size:11px;opacity:.8">XP</div></div></div>'+
+'<div class="fx"><div class="pb" style="background:rgba(255,255,255,.3)"><div class="pbf" style="width:'+Math.round(getLvPct(S.xp))+'%;background:#fff"></div></div><span style="font-size:11px;opacity:.8">'+Math.round(getLvPct(S.xp))+'%</span></div>'+
+'<div style="font-size:11px;opacity:.7;text-align:center;margin-top:4px">'+(lv.xpMax-S.xp)+' XP para o próximo nível</div></div>'+
+
+'<div class="g3" style="margin-bottom:14px">'+
+[{e:'🔥',v:S.streak,l:'Streak'},{e:'📚',v:S.rev,l:'Cards'},{e:'⭐',v:Object.keys(S.srs).filter(function(k){return S.srs[k].box>=4}).length,l:'Dominados'}].map(function(s){return'<div class="stat-card"><div style="font-size:20px">'+s.e+'</div><div style="font-size:18px;font-weight:900;color:#2d3748">'+s.v+'</div><div style="font-size:10px;color:#a0aec0">'+s.l+'</div></div>'}).join('')+'</div>'+
+
+'<div class="cd" style="padding:14px;margin-bottom:12px;border-color:#c3dafe">'+
+'<div class="fx" style="justify-content:space-between;margin-bottom:6px"><div style="font-size:12px;font-weight:800;color:#6C63FF">📋 PLANO DE HOJE (~1h30)</div><span style="font-size:11px;color:#a0aec0">'+planDone+'/'+plan.length+'</span></div>'+
+'<div class="fx" style="margin-bottom:8px">'+pb(planDone,plan.length,'#6C63FF')+'</div>'+
+plan.map(function(s){return'<div class="fx" style="padding:4px 0;cursor:pointer" onclick="'+(!s.done&&s.action?s.action:'')+'"><span style="font-size:16px">'+s.icon+'</span><span style="flex:1;font-size:12px;font-weight:600;'+(s.done?'text-decoration:line-through;color:#a0aec0':'')+'">'+s.text+'</span><span style="font-size:10px;color:#a0aec0">'+s.time+'</span></div>'}).join('')+
+'<button class="btn bg bs" style="margin-top:8px;font-size:11px;width:100%" onclick="go(\'roadmap\')">🗺️ Roadmap B2 em 2 anos</button></div>'+
+
+'<div class="cd" style="padding:14px;margin-bottom:12px;border-color:#fed7e2">'+
+'<div style="font-size:12px;font-weight:800;color:#d53f8c;margin-bottom:8px">💡 3 FRASES DO DIA — Repitam juntos!</div>'+
+getDailyPhrases().map(function(p){return'<div style="padding:8px 0;border-bottom:2px solid #f7fafc"><div style="font-size:15px;font-weight:700;margin-bottom:4px">'+p.en+' '+lb(p.en,'bs')+' '+lb(p.en,'bs lbs',true)+'</div><div style="font-size:13px;color:#718096">'+p.pt+'</div></div>'}).join('')+
+'<div style="font-size:11px;color:#d53f8c;margin-top:6px;font-weight:600">🎯 Usem entre vocês hoje!</div></div>'+
+
+'<div class="cd" style="padding:12px 14px;margin-bottom:12px;border-color:#fefcbf">'+
+'<div style="font-size:11px;font-weight:800;color:#d69e2e;margin-bottom:8px">🎯 MISSÕES ('+done.length+'/'+MISSIONS.length+')</div>'+
+MISSIONS.map(function(m){var d=m.ck(S.daily);var cl=S.claimed.indexOf(m.id)!==-1;return'<div class="fx" style="padding:4px 0;opacity:'+(d?1:.4)+'"><span style="font-size:14px">'+(d?'✅':m.icon)+'</span><span style="flex:1;font-size:11px;font-weight:600;'+(cl?'text-decoration:line-through':'')+'">'+m.t+'</span>'+(d&&!cl?'<button class="lb bs" style="background:#fefce8;color:#d69e2e;border-color:#fde68a;padding:2px 8px;font-size:10px" onclick="S.claimed.push(\''+m.id+'\');save();addXp('+m.xp+');render()">+'+m.xp+'</button>':'')+'</div>'}).join('')+'</div>'+
+
+'<div style="background:linear-gradient(135deg,#ebf4ff,#e8eeff);border:2px solid #c3dafe;border-radius:14px;padding:10px 14px;margin-bottom:14px;font-size:13px;color:#4c51bf;line-height:1.5">'+TIPS[new Date().getDate()%TIPS.length]+'</div>'+
+
+'<div class="g2" style="margin-bottom:10px">'+
+'<button class="btn bg" style="flex-direction:column;padding:18px;border-color:#c3dafe" onclick="go(\'topics\')"><span style="font-size:28px">📚</span><span style="font-size:13px;font-weight:800">Vocabulário</span></button>'+
+'<button class="btn bg" style="flex-direction:column;padding:18px;border-color:#c6f6d5" onclick="go(\'stories\')"><span style="font-size:28px">📖</span><span style="font-size:13px;font-weight:800">Histórias</span></button></div>'+
+'<div class="g3">'+
+'<button class="btn bg" style="flex-direction:column;padding:14px;border-color:#fed7e2" onclick="startChat()"><span style="font-size:22px">🤖</span><span style="font-size:11px;font-weight:700">Chat IA</span></button>'+
+'<button class="btn bg" style="flex-direction:column;padding:14px;border-color:#fefcbf" onclick="go(\'immersion\')"><span style="font-size:22px">🎬</span><span style="font-size:11px;font-weight:700">Imersão</span></button>'+
+'<button class="btn bg" style="flex-direction:column;padding:14px;border-color:#e9d8fd" onclick="go(\'achs\')"><span style="font-size:22px">🏆</span><span style="font-size:11px;font-weight:700">Conquistas</span></button></div>');
+}
+
+function rTopics(){
+var uLv=getLevel(S.xp).id,uIdx=lvI(uLv);
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'home\')">← Voltar</button><h2 style="font-size:22px;color:#6C63FF;margin-bottom:14px">📚 Temas de Vocabulário</h2>'+
+'<div class="fc">'+Object.keys(V).map(function(k){var v=V[k];var tI=lvI(v.lv);var lk=tI>uIdx+1;var m=mastered(k);var t=v.cards.length;
+return'<button class="btn bg" style="justify-content:flex-start;padding:14px 16px;opacity:'+(lk?.3:1)+'" '+(lk?'disabled ':'')+'onclick="S.topic=\''+k+'\';go(\'topicMenu\')">'+
+'<span style="font-size:26px;margin-right:12px">'+v.icon+'</span>'+
+'<div style="flex:1;text-align:left">'+
+'<div class="fx" style="justify-content:space-between"><span style="font-size:14px;font-weight:800">'+v.title+'</span><span style="font-size:10px;color:#a0aec0;background:#f7fafc;padding:2px 8px;border-radius:8px">'+v.lv+(lk?' 🔒':'')+'</span></div>'+
+'<div style="font-size:11px;color:#a0aec0">'+v.pt+' · '+t+' frases</div>'+
+'<div class="fx" style="margin-top:4px">'+pb(m,t,'#48bb78')+'<span style="font-size:10px;color:#a0aec0">'+Math.round(m/t*100)+'%</span></div></div></button>'}).join('')+'</div>');
+}
+
+function rTMenu(){
+var v=V[S.topic];var lv=getLevel(S.xp);var canEx=v.lv===lv.id&&(S.exPassed||[]).indexOf(lv.id)===-1&&EXAMS[lv.id];
+var modes=[{id:'learn',i:'📚',l:'Flashcards',d:'Ouvir, ver, memorizar',c:'#6C63FF'},{id:'dictation',i:'🎧',l:'Ditado',d:'Ouça e escreva!',c:'#d69e2e'},{id:'scramble',i:'🔀',l:'Montar Frase',d:'Coloque na ordem',c:'#3182ce'},{id:'speak',i:'🎤',l:'Falar',d:'Fale e seja avaliado!',c:'#d53f8c'},{id:'quiz',i:'🧩',l:'Quiz',d:'Teste seus conhecimentos',c:'#38a169'},{id:'speed',i:'⚡',l:'Modo Velocidade',d:'Quiz contra o relógio!',c:'#e53e3e'},{id:'memory',i:'🃏',l:'Jogo da Memória',d:'Combine EN↔PT!',c:'#d97706'},{id:'dialogue',i:'💬',l:'Diálogo',d:'Pratiquem juntos! 👫',c:'#805ad5'}];
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'topics\')">← Voltar</button>'+
+'<div class="fx" style="margin-bottom:16px"><span style="font-size:40px">'+v.icon+'</span><div><h2 style="font-size:20px;margin:0">'+v.title+'</h2><p style="color:#a0aec0;font-size:12px;margin:0">'+v.pt+' · '+v.lv+' · '+v.cards.length+' frases</p></div></div>'+
+'<div class="fc">'+modes.map(function(m){return'<button class="btn bg" style="justify-content:flex-start;border-left:4px solid '+m.c+'" onclick="startMode(\''+m.id+'\')"><span style="font-size:22px;margin-right:12px">'+m.i+'</span><div style="text-align:left"><div style="font-size:14px;font-weight:800">'+m.l+'</div><div style="font-size:11px;color:#a0aec0">'+m.d+'</div></div><span style="margin-left:auto;color:#cbd5e0">→</span></button>'}).join('')+
+(canEx?'<button class="btn bp" style="margin-top:10px" onclick="startExam(\''+lv.id+'\')">🎓 Prova '+lv.id+' → '+(LEVELS[lvI(lv.id)+1]?LEVELS[lvI(lv.id)+1].id:'🏆')+'</button>':'')+'</div>');
+}
+
+function startMode(m){S.mode=m;S.idx=0;S.fb=null;S.input='';S.showAns=false;S.dStep=0;S.dPt=false;S.spResult=null;var v=V[S.topic];
+if(m==='learn')S.queue=v.cards.slice(0,10);
+if(m==='quiz'){var qs=v.cards.slice().sort(function(){return Math.random()-.5}).slice(0,8).map(function(c){var tp=Math.random()>.5?'en':'pt';var cr=tp==='en'?c.pt:c.en;var wr=v.cards.filter(function(x){return x.id!==c.id}).sort(function(){return Math.random()-.5}).slice(0,3);var opts=[cr].concat(wr.map(function(w){return tp==='en'?w.pt:w.en})).sort(function(){return Math.random()-.5});return{id:c.id,q:tp==='en'?c.en:c.pt,correct:cr,tp:tp,opts:opts}});S.quizSt=qs;S.quizSc={c:0,t:0};}
+if(m==='dictation'){S.queue=v.cards.slice().sort(function(){return Math.random()-.5}).slice(0,8);}
+if(m==='scramble'){S.queue=v.cards.slice().sort(function(){return Math.random()-.5}).slice(0,8);S.scrWords=[];S.scrSel=[];}
+if(m==='speak')S.queue=v.cards.slice().sort(function(){return Math.random()-.5}).slice(0,8);
+if(m==='speed'){var qs=v.cards.slice().sort(function(){return Math.random()-.5}).slice(0,10).map(function(c){var cr=c.pt;var wr=v.cards.filter(function(x){return x.id!==c.id}).sort(function(){return Math.random()-.5}).slice(0,3);return{id:c.id,q:c.en,correct:cr,opts:[cr].concat(wr.map(function(w){return w.pt})).sort(function(){return Math.random()-.5})}});S.quizSt=qs;S.quizSc={c:0,t:0};S.speedTime=10;S.speedTimer=null;}
+if(m==='memory'){var pick=v.cards.slice().sort(function(){return Math.random()-.5}).slice(0,6);var tiles=[];pick.forEach(function(c,i){tiles.push({id:i,text:c.en,pair:i,type:'en'});tiles.push({id:i+6,text:c.pt,pair:i,type:'pt'});});S.memTiles=tiles.sort(function(){return Math.random()-.5});S.memFlipped=[];S.memMatched=[];S.memMoves=0;S.memBusy=false;}
+go(m);}
+
+// ═══════ LEARN ═══════
+function rLearn(){var v=V[S.topic];if(S.idx>=S.queue.length){sfxComplete();confetti();R('<div class="tc" style="padding:40px"><div style="font-size:56px;animation:bounce 1s infinite">🎉</div><h3 style="margin:12px 0">Sessão completa!</h3><p style="color:#a0aec0">'+getRandMotivation()+'</p><button class="btn bp" style="margin-top:16px" onclick="go(\'topicMenu\')">Continuar</button></div>');return;}
+var c=S.queue[S.idx];var box=(S.srs[c.id]&&S.srs[c.id].box)||0;
+var bL=["🆕 Novo","📝 Aprendendo","📝 Aprendendo","🔄 Revisão","🔥 Quase lá","⭐ Dominado!"];var bC=["#a0aec0","#e53e3e","#d69e2e","#6C63FF","#38a169","#38a169"];
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'topicMenu\')">← '+v.pt+'</button>'+
+'<div class="fx" style="margin-bottom:12px">'+pb(S.idx,S.queue.length)+'<span style="font-size:12px;color:#a0aec0">'+(S.idx+1)+'/'+S.queue.length+'</span></div>'+
+'<div class="cd tc" style="padding:32px 20px;min-height:220px;cursor:pointer;border-color:'+(S.showAns?'#6C63FF':'#e2e8f0')+'" onclick="if(!S.showAns){S.showAns=true;say(\''+esc(c.en)+'\');render();}">'+
+'<div style="font-size:12px;color:'+bC[box]+';font-weight:800">'+bL[box]+'</div>'+
+'<div style="font-size:26px;font-weight:900;margin:16px 0 10px;color:#2d3748">'+c.en+'</div>'+
+'<div class="fx" style="justify-content:center;gap:8px;flex-wrap:wrap">'+lb(c.en,'lbl')+' '+lb(c.en,'lbl lbs',true)+'</div>'+
+(S.showAns?'<div style="margin-top:18px"><div style="font-size:20px;color:#6C63FF;font-weight:700">'+c.pt+'</div></div>':'<div style="font-size:13px;color:#cbd5e0;margin-top:16px">👆 Toque para ver tradução</div>')+'</div>'+
+(S.showAns?'<div style="font-size:13px;color:#718096;text-align:center;margin:10px 0">Você lembrou? 🤔</div><div class="g3">'+ 
+['<button class="btn" style="background:#fff5f5;color:#e53e3e;border:2px solid #fed7d7;border-radius:14px;padding:12px 4px;font-size:14px" onclick="updSrs(\''+c.id+'\',false);S.showAns=false;S.idx++;render()">Não 😕</button>',
+'<button class="btn" style="background:#fffff0;color:#d69e2e;border:2px solid #fefcbf;border-radius:14px;padding:12px 4px;font-size:14px" onclick="updSrs(\''+c.id+'\',false);S.showAns=false;S.idx++;render()">Quase 🤔</button>',
+'<button class="btn" style="background:#f0fff4;color:#38a169;border:2px solid #c6f6d5;border-radius:14px;padding:12px 4px;font-size:14px" onclick="updSrs(\''+c.id+'\',true);S.showAns=false;S.idx++;render()">Sim! 🎉</button>'].join('')+'</div>':''));
+}
+
+// ═══════ DICTATION ═══════
+function rDictation(){var v=V[S.topic];if(S.idx>=S.queue.length){S.daily.dicts=(S.daily.dicts||0)+1;save();R('<div class="tc" style="padding:40px"><div style="font-size:56px">🎧</div><h3>Ditado completo!</h3><p style="color:#a0aec0;margin:8px 0">'+getRandMotivation()+'</p><button class="btn bp" style="margin-top:12px" onclick="go(\'topicMenu\')">Continuar</button></div>');return;}
+var c=S.queue[S.idx];
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'topicMenu\')">← '+v.pt+'</button>'+
+'<div class="fx" style="margin-bottom:12px">'+pb(S.idx,S.queue.length,'#d69e2e')+'<span style="font-size:12px;color:#a0aec0">'+(S.idx+1)+'/'+S.queue.length+'</span></div>'+
+'<div class="cd tc" style="margin-bottom:12px;padding:28px;border-color:#fefcbf">'+
+'<div style="font-size:16px;color:#d69e2e;font-weight:800;margin-bottom:12px">🎧 OUÇA E ESCREVA</div>'+
+'<div style="font-size:13px;color:#a0aec0;margin-bottom:14px">Ouça a frase e escreva o que ouviu!</div>'+
+'<div class="fx" style="justify-content:center;gap:10px">'+lb(c.en,'lbl')+' '+lb(c.en,'lbl lbs',true)+'</div></div>'+
+'<input id="dictIn" placeholder="Escreva o que ouviu..." style="margin-bottom:8px" value="'+(S.input||'')+'" oninput="S.input=this.value" onkeydown="if(event.key===\'Enter\')checkDict()">'+
+(S.fb===null?'<button class="btn bp" onclick="checkDict()">Verificar ✓</button>':'')+
+(S.fb!==null?'<div class="cd" style="margin-top:10px;border-color:'+(S.fb==='correct'?'#c6f6d5':'#fed7d7')+';animation:su .3s">'+
+'<div style="font-size:15px;font-weight:800;color:'+(S.fb==='correct'?'#38a169':'#e53e3e')+';margin-bottom:8px">'+(S.fb==='correct'?'🎉 Perfeito! Mandou bem!':'❌ Quase! Veja a resposta:')+'</div>'+
+'<div style="font-size:17px;font-weight:800;margin-bottom:4px">'+c.en+'</div>'+
+'<div style="font-size:13px;color:#718096">'+c.pt+'</div>'+
+'<div style="margin-top:8px">'+lb(c.en,'lbl')+' '+lb(c.en,'lbl lbs',true)+'</div>'+
+'<button class="btn bp" style="margin-top:10px" onclick="S.idx++;S.fb=null;S.input=\'\';render()">Próxima →</button></div>':''));
+if(!S.fb)setTimeout(function(){say(c.en)},400);
+}
+function checkDict(){var c=S.queue[S.idx];var clean=function(s){return s.toLowerCase().replace(/[^a-z\s]/g,'').replace(/\s+/g,' ').trim()};S.fb=clean(S.input)===clean(c.en)?'correct':'wrong';updSrs(c.id,S.fb==='correct');render();}
+
+// ═══════ SCRAMBLE ═══════
+function scrSelect(i){S.scrSel.push(S.scrWords[i]);S.scrWords.splice(i,1);render();}
+function scrDeselect(i){S.scrWords.push(S.scrSel[i]);S.scrSel.splice(i,1);render();}
+function rScramble(){var v=V[S.topic];if(S.idx>=S.queue.length){R('<div class="tc" style="padding:40px"><div style="font-size:56px">🔀</div><h3>Montagem completa!</h3><p style="color:#a0aec0;margin:8px 0">'+getRandMotivation()+'</p><button class="btn bp" style="margin-top:12px" onclick="go(\'topicMenu\')">Continuar</button></div>');return;}
+var c=S.queue[S.idx];
+if(!S.scrWords.length||S.fb==='next'){var words=c.en.replace(/[?.!,]/g,'').split(' ');S.scrWords=words.slice().sort(function(){return Math.random()-.5});S.scrSel=[];S.fb=null;}
+var curr=S.scrSel.join(' ');var correct=c.en.replace(/[?.!,]/g,'').toLowerCase()===curr.toLowerCase();
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'topicMenu\')">← '+v.pt+'</button>'+
+'<div class="fx" style="margin-bottom:12px">'+pb(S.idx,S.queue.length,'#3182ce')+'<span style="font-size:12px;color:#a0aec0">'+(S.idx+1)+'/'+S.queue.length+'</span></div>'+
+'<div class="cd" style="margin-bottom:12px;border-color:#bee3f8"><div style="font-size:15px;color:#3182ce;font-weight:800;margin-bottom:8px">🔀 MONTE A FRASE</div>'+
+'<div style="font-size:14px;color:#718096;margin-bottom:8px">'+c.pt+'</div>'+
+'<div style="margin-bottom:4px">'+lb(c.en)+' '+lb(c.en,'lbs',true)+'</div></div>'+
+'<div class="scr-slot">'+S.scrSel.map(function(w,i){return'<span class="scr-word scr-sel" onclick="scrDeselect('+i+')">'+w+'</span>'}).join('')+(S.scrSel.length===0?'<span style="color:#cbd5e0;font-size:13px;padding:12px">Toque nas palavras abaixo... 👇</span>':'')+'</div>'+
+'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+S.scrWords.map(function(w,i){return'<span class="scr-word" onclick="scrSelect('+i+')">'+w+'</span>'}).join('')+'</div>'+
+(correct?'<div class="cd" style="border-color:#c6f6d5;margin-bottom:8px;animation:su .3s"><div style="color:#38a169;font-weight:800;font-size:15px">🎉 Correto! Arrasou!</div><div style="margin-top:6px">'+lb(c.en,'lbl')+'</div></div><button class="btn bp" onclick="S.idx++;S.fb=\'next\';S.scrWords=[];S.scrSel=[];render()">Próxima →</button>':'')+
+(!correct&&S.scrWords.length===0&&S.scrSel.length>0?'<div class="cd" style="border-color:#fed7d7;margin-bottom:8px"><div style="color:#e53e3e;font-weight:800;font-size:15px">Quase! A ordem é:</div><div style="font-size:16px;font-weight:800;margin-top:4px">'+c.en+'</div><div style="margin-top:6px">'+lb(c.en,'lbl')+'</div></div><button class="btn bp" onclick="S.idx++;S.fb=\'next\';S.scrWords=[];S.scrSel=[];render()">Próxima →</button>':''));
+if(correct&&S.fb!=='done'){S.fb='done';say(c.en);updSrs(c.id,true);}
+if(!correct&&S.scrWords.length===0&&S.scrSel.length>0&&S.fb!=='wrong'){S.fb='wrong';updSrs(c.id,false);}
+}
+
+// ═══════ SPEAK ═══════
+function rSpeak(){var v=V[S.topic];if(S.idx>=S.queue.length){R('<div class="tc" style="padding:40px"><div style="font-size:56px">🎤</div><h3>Prática de fala completa!</h3><p style="color:#a0aec0;margin:8px 0">'+getRandMotivation()+'</p><button class="btn bp" style="margin-top:12px" onclick="go(\'topicMenu\')">Continuar</button></div>');return;}
+var c=S.queue[S.idx];
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'topicMenu\')">← '+v.pt+'</button>'+
+'<div class="fx" style="margin-bottom:12px">'+pb(S.idx,S.queue.length,'#d53f8c')+'<span style="font-size:12px;color:#a0aec0">'+(S.idx+1)+'/'+S.queue.length+'</span></div>'+
+'<div class="cd tc" style="margin-bottom:12px;padding:24px;border-color:#fed7e2">'+
+'<div style="font-size:15px;color:#d53f8c;font-weight:800;margin-bottom:8px">🎤 OUÇA E REPITA</div>'+
+'<div style="font-size:24px;font-weight:900;margin:12px 0;color:#2d3748">'+c.en+'</div>'+
+'<div style="font-size:14px;color:#a0aec0;margin-bottom:12px">'+c.pt+'</div>'+
+'<div class="fx" style="justify-content:center;gap:8px;margin-bottom:16px">'+lb(c.en,'lbl')+' '+lb(c.en,'lbl lbs',true)+'</div>'+
+'<div class="tc"><button class="mic-btn'+(isRecording?' recording':'')+'" onclick="doSpeak()">🎤</button></div>'+
+'<div style="font-size:12px;color:#a0aec0;margin-top:8px">'+(isRecording?'🔴 Ouvindo... fale agora!':'Toque no 🎤 e fale!')+'</div></div>'+
+(S.spResult?'<div class="cd" style="border-color:'+(S.spResult.score>=70?'#c6f6d5':S.spResult.score>=40?'#fefcbf':'#fed7d7')+';animation:su .3s">'+
+'<div style="font-size:15px;font-weight:800;color:'+(S.spResult.score>=70?'#38a169':S.spResult.score>=40?'#d69e2e':'#e53e3e')+'">'+(S.spResult.score>=70?'🎉 Ótima pronúncia!':S.spResult.score>=40?'👍 Quase perfeito!':'💪 Tente de novo!')+'</div>'+
+'<div style="margin:8px 0"><div style="font-size:11px;color:#a0aec0">Você disse:</div><div style="font-size:16px;font-weight:800">"'+S.spResult.text+'"</div></div>'+
+'<div style="font-size:11px;color:#a0aec0">Esperado:</div><div style="font-size:16px;font-weight:800;color:#6C63FF">"'+c.en+'"</div>'+
+'<div style="font-size:24px;font-weight:900;margin-top:8px;color:'+(S.spResult.score>=70?'#38a169':'#d69e2e')+'">'+S.spResult.score+'%</div>'+
+'<button class="btn bp" style="margin-top:10px" onclick="S.idx++;S.spResult=null;S.daily.speaks=(S.daily.speaks||0)+1;save();render()">Próxima →</button></div>':'')+
+(!S.spResult&&!isRecording?'<button class="btn bg" style="margin-top:8px" onclick="S.idx++;S.spResult=null;render()">Pular →</button>':''));
+// BUG FIX: Only auto-play when NOT recording and no result yet
+if(!isRecording&&!S.spResult)setTimeout(function(){say(c.en)},300);
+}
+function doSpeak(){
+// Toggle: if recording, stop it
+if(isRecording){
+  try{if(recognition)recognition.stop();}catch(e){}
+  isRecording=false;render();return;
+}
+// Stop any audio before recording
+stopAudio();
+var c=S.queue[S.idx];
+// Small delay to ensure TTS is fully stopped before mic opens
+setTimeout(function(){
+startRec(function(text,err){if(err||!text){S.spResult={text:'(não entendi)',score:0};render();return;}var clean=function(s){return s.toLowerCase().replace(/[^a-z\s]/g,'').trim()};var a=clean(text).split(' '),b=clean(c.en).split(' ');var matches=a.filter(function(w){return b.indexOf(w)!==-1}).length;var score=Math.round((matches/b.length)*100);S.spResult={text:text,score:score};if(score>=70)updSrs(c.id,true);render();});
+},200);
+}
+
+// ═══════ SPEED ROUND ═══════
+function rSpeed(){var v=V[S.topic];
+if(S.idx>=S.quizSt.length||getLives()<=0){
+if(S.speedTimer){clearInterval(S.speedTimer);S.speedTimer=null;}
+var p=S.quizSc.t>0?Math.round(S.quizSc.c/S.quizSc.t*100):0;if(p>=80)confetti();sfxComplete();S.daily.quizzes=(S.daily.quizzes||0)+1;save();
+R('<div class="tc" style="padding:32px"><div style="font-size:56px;animation:bounce 1s infinite">'+(p>=80?'🏆':getLives()<=0?'💔':'👍')+'</div><h3 style="margin:12px 0">'+(getLives()<=0?'Sem vidas!':p>=80?'Incrível! ⚡':'Bom!')+'</h3><div style="font-size:36px;font-weight:900;color:'+(p>=80?'#38a169':'#d69e2e')+'">'+p+'%</div><p style="color:#718096">'+S.quizSc.c+'/'+S.quizSc.t+' em velocidade!</p><p style="color:#6C63FF;font-size:13px;margin:8px 0">'+getRandMotivation()+'</p><button class="btn bp" style="margin-top:12px" onclick="go(\'topicMenu\')">Continuar</button></div>');return;}
+if(getLives()<=0){R(noLivesHTML());return;}
+var q=S.quizSt[S.idx];
+// Start timer if not running
+if(!S.speedTimer){S.speedTime=10;S.speedTimer=setInterval(function(){S.speedTime--;if(S.speedTime<=0){clearInterval(S.speedTimer);S.speedTimer=null;loseLife();S.quizSc.t++;S.idx++;render();}else{var te=document.getElementById('speed-timer');if(te)te.textContent=S.speedTime;}},1000);}
+R(heartsHTML()+
+'<div class="fx" style="margin-bottom:12px">'+pb(S.idx,S.quizSt.length,'#e53e3e')+'<span style="font-size:12px;color:#a0aec0">'+(S.idx+1)+'/'+S.quizSt.length+'</span></div>'+
+'<div class="cd tc" style="margin-bottom:12px;border-color:#fed7d7">'+
+'<div style="font-size:48px;font-weight:900;color:'+(S.speedTime<=3?'#e53e3e':'#d69e2e')+'" id="speed-timer">'+S.speedTime+'</div>'+
+'<div style="font-size:11px;color:#a0aec0;margin-bottom:8px">segundos</div>'+
+'<div style="font-size:20px;font-weight:900;color:#2d3748;margin:8px 0">'+q.q+'</div>'+
+lb(q.q,'lbl')+'</div>'+
+'<div class="fc">'+q.opts.map(function(o,i){return'<button class="btn bg" style="justify-content:flex-start;font-size:15px;font-weight:700" onclick="speedAns('+i+')">'+o+'</button>'}).join('')+'</div>');
+say(q.q);
+}
+function speedAns(i){if(S.speedTimer){clearInterval(S.speedTimer);S.speedTimer=null;}var q=S.quizSt[S.idx];var ok=q.opts[i]===q.correct;S.quizSc.c+=ok?1:0;S.quizSc.t++;if(ok){sfxCorrect();addXp(20);}else{loseLife();}S.idx++;render();}
+
+// ═══════ MEMORY GAME ═══════
+function rMemory(){var v=V[S.topic];
+if(S.memMatched.length===S.memTiles.length){confetti();sfxComplete();
+R('<div class="tc" style="padding:32px"><div style="font-size:56px;animation:bounce 1s infinite">🎉</div><h3 style="margin:12px 0">Jogo completo!</h3><p style="color:#718096">'+S.memMoves+' tentativas</p><p style="color:#6C63FF;font-size:14px;font-weight:700;margin:8px 0">'+(S.memMoves<=8?'⭐ Memória incrível!':S.memMoves<=12?'👍 Muito bom!':'💪 Continue praticando!')+'</p><p style="color:#d69e2e;font-size:13px">'+getRandMotivation()+'</p><button class="btn bp" style="margin-top:16px" onclick="addXp(30);go(\'topicMenu\')">Continuar (+30 XP)</button></div>');return;}
+var cols=3;
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'topicMenu\')">← '+v.pt+'</button>'+
+'<div class="fx" style="justify-content:space-between;margin-bottom:12px"><div style="font-size:14px;font-weight:800;color:#d97706">🃏 Jogo da Memória</div><div style="font-size:13px;color:#718096">Tentativas: <strong>'+S.memMoves+'</strong></div></div>'+
+'<div style="font-size:12px;color:#a0aec0;margin-bottom:12px;text-align:center">Encontre os pares EN ↔ PT!</div>'+
+'<div style="display:grid;grid-template-columns:repeat('+cols+',1fr);gap:8px">'+
+S.memTiles.map(function(t,i){
+var isFlipped=S.memFlipped.indexOf(i)!==-1;
+var isMatched=S.memMatched.indexOf(t.pair)!==-1;
+var bg=isMatched?'linear-gradient(135deg,#f0fff4,#c6f6d5)':isFlipped?(t.type==='en'?'linear-gradient(135deg,#ebf4ff,#c3dafe)':'linear-gradient(135deg,#faf5ff,#e9d8fd)'):'linear-gradient(135deg,#edf2f7,#e2e8f0)';
+var border=isMatched?'#48bb78':isFlipped?'#6C63FF':'#cbd5e0';
+var text=isFlipped||isMatched?t.text:'?';
+var textColor=isMatched?'#38a169':isFlipped?'#2d3748':'#a0aec0';
+return'<div onclick="memFlip('+i+')" style="background:'+bg+';border:2px solid '+border+';border-radius:14px;padding:14px 8px;text-align:center;min-height:70px;display:flex;align-items:center;justify-content:center;cursor:'+(isFlipped||isMatched?'default':'pointer')+';transition:all .2s;font-size:'+(isFlipped||isMatched?'13':'24')+'px;font-weight:700;color:'+textColor+'">'+(isMatched?'✅ ':'')+text+'</div>'
+}).join('')+'</div>');
+}
+function memFlip(i){if(S.memBusy)return;var t=S.memTiles[i];if(S.memFlipped.indexOf(i)!==-1||S.memMatched.indexOf(t.pair)!==-1)return;
+sfxClick();S.memFlipped.push(i);
+if(S.memFlipped.length===1){render();return;}
+S.memMoves++;S.memBusy=true;render();
+var t1=S.memTiles[S.memFlipped[0]],t2=S.memTiles[S.memFlipped[1]];
+if(t1.pair===t2.pair&&t1.type!==t2.type){
+setTimeout(function(){sfxCorrect();S.memMatched.push(t1.pair);S.memFlipped=[];S.memBusy=false;say(t1.type==='en'?t1.text:t2.text);render();},600);
+}else{
+setTimeout(function(){sfxWrong();S.memFlipped=[];S.memBusy=false;render();},1000);
+}
+}
+
+// ═══════ QUIZ ═══════
+function rQuiz(){var v=V[S.topic];if(S.idx>=S.quizSt.length){var p=S.quizSc.t>0?Math.round(S.quizSc.c/S.quizSc.t*100):0;S.daily.quizzes=(S.daily.quizzes||0)+1;save();if(p>=80)confetti();sfxComplete();
+R('<div class="tc" style="padding:32px"><div style="font-size:56px;animation:bounce 1s infinite">'+(p>=80?'🏆':'👍')+'</div><h3 style="margin:12px 0">'+(p>=80?'Excelente!':'Bom trabalho!')+'</h3><div style="font-size:36px;font-weight:900;color:'+(p>=80?'#38a169':'#d69e2e')+'">'+p+'%</div><p style="color:#a0aec0">'+S.quizSc.c+'/'+S.quizSc.t+' corretas</p><p style="color:#6C63FF;font-size:13px;margin:8px 0">'+getRandMotivation()+'</p><button class="btn bp" style="margin-top:12px" onclick="go(\'topicMenu\')">Continuar</button></div>');return;}
+var q=S.quizSt[S.idx];
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'topicMenu\')">← Quiz</button>'+
+'<div class="fx" style="margin-bottom:12px">'+pb(S.idx,S.quizSt.length,'#38a169')+'<span style="font-size:12px;color:#a0aec0">'+(S.idx+1)+'/'+S.quizSt.length+'</span></div>'+
+'<div class="cd" style="margin-bottom:12px;border-color:#c6f6d5"><div style="font-size:11px;color:#38a169;font-weight:800;margin-bottom:6px">'+(q.tp==='en'?'🇺🇸 → 🇧🇷 Traduza:':'🇧🇷 → 🇺🇸 Translate:')+'</div>'+
+'<div style="font-size:22px;font-weight:900;color:#2d3748">'+q.q+'</div>'+
+(q.tp==='en'?'<div style="margin-top:8px">'+lb(q.q,'lbl')+' '+lb(q.q,'lbl lbs',true)+'</div>':'')+'</div>'+
+'<div class="fc">'+q.opts.map(function(o,i){var sel=S.fb&&S.fb.i===i;var isC=o===q.correct;var sh=S.fb!==null;
+return'<button class="btn" style="background:'+(sh&&isC?'#f0fff4':sh&&sel?'#fff5f5':'#fff')+';color:#2d3748;border:2px solid '+(sh&&isC?'#48bb78':sh&&sel?'#fc8181':'#e2e8f0')+';border-radius:14px;padding:14px 16px;justify-content:flex-start;font-size:15px" '+(sh?'disabled ':'')+'onclick="quizAns('+i+')">'+(sh&&isC?'✅ ':'')+(sh&&sel&&!isC?'❌ ':'')+o+'</button>'}).join('')+'</div>');
+if(q.tp==='en'&&!S.fb)setTimeout(function(){say(q.q)},300);
+}
+function quizAns(i){var q=S.quizSt[S.idx];var o=q.opts[i];var ok=o===q.correct;S.fb={i:i};S.quizSc.c+=ok?1:0;S.quizSc.t++;updSrs(q.id,ok);if(ok)addXp(15);if(q.tp==='pt')say(q.correct);render();setTimeout(function(){S.idx++;S.fb=null;render()},1200);}
+
+// ═══════ DIALOGUE ═══════
+function rDialogue(){var v=V[S.topic];var dlg=v.dlg||[];if(!dlg.length){R('<div class="tc" style="padding:40px"><p>Sem diálogos neste tema.</p><button class="btn bp" style="margin-top:12px" onclick="go(\'topicMenu\')">Voltar</button></div>');return;}
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'topicMenu\')">← '+v.pt+'</button>'+
+'<div style="background:linear-gradient(135deg,#ebf4ff,#faf5ff);border:2px solid #c3dafe;border-radius:14px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#6C63FF;font-weight:600">🎭 Um lê <strong>A</strong>, outro lê <strong>B</strong>. Em voz alta! 🔊</div>'+
+'<div class="fc" style="margin-bottom:14px">'+dlg.slice(0,S.dStep+1).map(function(l,i){var isA=l.s==='A';return'<div style="display:flex;flex-direction:column;align-items:'+(isA?'flex-start':'flex-end')+';'+(i===S.dStep?'animation:su .3s':'')+'"><span style="font-size:11px;color:#a0aec0;font-weight:700;margin-bottom:3px">'+(isA?'👩 Pessoa A':'👨 Pessoa B')+'</span><div class="'+(isA?'bubble-a':'bubble-b')+'"><div style="font-size:15px;font-weight:700">'+l.en+'</div>'+(S.dPt?'<div style="font-size:12px;color:#a0aec0">'+l.pt+'</div>':'')+'</div><div style="margin-top:3px">'+lb(l.en,'bs')+' '+lb(l.en,'bs lbs',true)+'</div></div>'}).join('')+'</div>'+
+'<div class="fx"><button class="btn bg" style="flex:1;font-size:12px" onclick="S.dPt=!S.dPt;render()">'+(S.dPt?'🙈 Esconder PT':'👀 Mostrar PT')+'</button>'+
+'<button class="btn bg" style="width:50px" '+(S.dStep===0?'disabled style="opacity:.3" ':'')+'onclick="S.dStep--;render()">←</button>'+
+'<button class="btn bp" style="flex:2" onclick="if(S.dStep<'+(dlg.length-1)+'){S.dStep++;render();}else{addXp(25);go(\'topicMenu\');}">'+(S.dStep<dlg.length-1?'Próxima fala →':'Concluir ✓')+'</button></div>');
+if(dlg[S.dStep])setTimeout(function(){say(dlg[S.dStep].en)},200);
+}
+
+// ═══════ STORIES ═══════
+function rStories(){var uIdx=lvI(getLevel(S.xp).id);
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'home\')">← Voltar</button><h2 style="font-size:22px;color:#6C63FF;margin-bottom:4px">📖 Histórias</h2><p style="color:#a0aec0;font-size:12px;margin-bottom:16px">Toque nas palavras coloridas → Anki! 🔊 Todas com áudio</p>'+
+LEVELS.map(function(lv,li){var sts=STORIES.filter(function(s){return s.lv===lv.id});if(!sts.length)return'';var lk=li>uIdx+1;
+return'<div style="margin-bottom:16px"><div style="font-size:12px;font-weight:800;color:'+(lk?'#a0aec0':lv.color)+';margin-bottom:8px">'+lv.emoji+' Nível '+lv.id+(lk?' 🔒':'')+'</div>'+
+sts.map(function(s){return'<button class="btn bg" style="justify-content:flex-start;padding:14px;margin-bottom:6px;opacity:'+(lk?.3:1)+'" '+(lk?'disabled ':'')+'onclick="startStory(\''+s.id+'\')"><span style="font-size:24px;margin-right:10px">'+s.icon+'</span><div style="text-align:left;flex:1"><div style="font-size:14px;font-weight:800">'+s.title+'</div><div style="font-size:11px;color:#a0aec0">'+s.pt+'</div></div><span style="color:#cbd5e0">→</span></button>'}).join('')+'</div>'}).join(''));
+}
+function startStory(id){S.stId=id;S.stStep=0;S.stV={};S.stShowQ=false;S.stQI=0;S.stQS=0;S.fb=null;go('story');}
+
+// ═══════ STORY READER ═══════
+function rStory(){var story=STORIES.find(function(s){return s.id===S.stId});if(!story){go('stories');return;}
+if(S.stShowQ){
+if(S.stQI>=story.qs.length){R('<div class="tc" style="padding:32px"><div style="font-size:60px;animation:bounce 1s infinite">'+(S.stQS===story.qs.length?'🏆':'👍')+'</div><h3 style="margin:12px 0">'+(S.stQS===story.qs.length?'Perfeito!':'Bom trabalho!')+'</h3><p style="color:#718096">'+S.stQS+'/'+story.qs.length+' corretas</p>'+
+(Object.keys(S.stV).length?'<div class="cd" style="margin:14px 0;text-align:left;border-color:#c6f6d5"><div style="font-size:12px;font-weight:800;color:#38a169;margin-bottom:6px">📚 Palavras no seu Anki:</div>'+Object.keys(S.stV).map(function(en){return'<div style="font-size:13px;color:#718096;padding:2px 0">• '+en+' = '+S.stV[en]+'</div>'}).join('')+'</div>':'')+
+'<button class="btn bp" style="margin-top:12px" onclick="go(\'stories\')">Continuar</button></div>');return;}
+var q=story.qs[S.stQI];
+R('<div style="font-size:12px;color:#d69e2e;font-weight:800;margin-bottom:12px">📝 Compreensão ('+((S.stQI+1)+'/'+story.qs.length)+')</div>'+
+'<div class="cd" style="margin-bottom:12px;border-color:#fefcbf"><div style="font-size:16px;font-weight:800">'+q.q+'</div><div style="margin-top:6px">'+lb(q.q)+'</div></div>'+
+'<div class="fc">'+q.o.map(function(o,i){var sel=S.fb===i;var isC=i===q.c;var sh=S.fb!==null;return'<button class="btn" style="background:'+(sh&&isC?'#f0fff4':sh&&sel?'#fff5f5':'#fff')+';color:#2d3748;border:2px solid '+(sh&&isC?'#48bb78':sh&&sel?'#fc8181':'#e2e8f0')+';border-radius:14px;padding:14px;justify-content:flex-start;font-size:14px" '+(sh?'disabled ':'')+'onclick="storyQAns('+i+')">'+(sh&&isC?'✅ ':'')+(sh&&sel&&!isC?'❌ ':'')+o+'</button>'}).join('')+'</div>');
+setTimeout(function(){say(q.q)},300);return;}
+
+var par=story.pars[S.stStep];
+var parts=[par.t];
+Object.keys(par.v).forEach(function(w){var np=[];parts.forEach(function(p){if(typeof p!=='string'){np.push(p);return;}var r=new RegExp('('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');p.split(r).forEach(function(s){if(s.toLowerCase()===w.toLowerCase())np.push({w:s,t:par.v[w]});else np.push(s);});});parts=np;});
+
+var rendered=parts.map(function(p,i){if(typeof p==='string')return p;var a=S.stV[p.w.toLowerCase()];return'<span class="vw'+(a?' va':'')+'" onclick="stTap('+i+')">'+p.w+(a?' <span style="font-size:10px">('+p.t+')</span>':'')+'</span>';}).join('');
+
+// Store parts for stTap to reference
+window._stParts=parts;
+
+R('<button class="btn bg bs" style="width:auto;margin-bottom:12px" onclick="go(\'stories\')">← Histórias</button>'+
+'<div class="fx" style="margin-bottom:10px"><span style="font-size:28px">'+story.icon+'</span><div><div style="font-size:16px;font-weight:900">'+story.title+'</div><div style="font-size:11px;color:#a0aec0">'+story.lv+' · '+story.pt+'</div></div></div>'+
+'<div class="fx" style="margin-bottom:12px">'+pb(S.stStep+1,story.pars.length,'#6C63FF')+'<span style="font-size:12px;color:#a0aec0">'+(S.stStep+1)+'/'+story.pars.length+'</span></div>'+
+'<div class="cd" style="min-height:80px;margin-bottom:10px"><div style="font-size:17px;line-height:2.2;font-weight:500">'+rendered+'</div></div>'+
+'<div class="fx" style="margin-bottom:8px;flex-wrap:wrap;gap:6px">'+lb(par.t,'lbl')+' '+lb(par.t,'lbl lbs',true)+'</div>'+
+'<div style="background:#ebf8ff;border:2px solid #bee3f8;border-radius:12px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#3182ce">💡 Toque nas <strong>palavras azuis</strong> para ouvir a pronúncia e adicionar ao Anki!</div>'+
+'<div class="fx"><button class="btn bg" style="width:50px" '+(S.stStep===0?'disabled style="opacity:.3" ':'')+'onclick="S.stStep--;render()">←</button>'+
+'<button class="btn bp" style="flex:1" onclick="stNext()">'+(S.stStep<story.pars.length-1?'Próximo →':'Quiz de Compreensão 📝')+'</button></div>');
+setTimeout(function(){say(par.t)},400);
+}
+function stTap(i){var p=window._stParts[i];if(!p||typeof p==='string')return;say(p.w);if(!S.stV[p.w.toLowerCase()]){S.stV[p.w.toLowerCase()]=p.t;var cid='sv_'+p.w.toLowerCase().replace(/\s/g,'_');S.srs[cid]={box:0,last:Date.now()};save();addXp(5);}render();}
+function stNext(){var story=STORIES.find(function(s){return s.id===S.stId});if(S.stStep<story.pars.length-1){S.stStep++;render();}else{S.stShowQ=true;S.storiesR++;S.daily.stories=(S.daily.stories||0)+1;save();addXp(40);render();}}
+function storyQAns(i){var story=STORIES.find(function(s){return s.id===S.stId});S.fb=i;if(i===story.qs[S.stQI].c)S.stQS++;render();setTimeout(function(){S.stQI++;S.fb=null;render()},1000);}
+
+// ═══════ AI CHAT ═══════
+function startChat(){var lv=getLevel(S.xp);if(!S.gemKey){alert('Configure sua API key do Gemini em ⚙️ Configurações primeiro!');go('settings');return;}S.chatMsgs=[{role:'assistant',text:'Hi '+S.name+'! 😊 Your level: '+lv.id+'. Talk to me about anything!\n\n(Fale qualquer coisa em inglês! Eu te ajudo!)'}];S.chatIn='';S.chatLd=false;go('aichat');}
+function rChat(){
+R('<button class="btn bg bs" style="width:auto;margin-bottom:12px" onclick="go(\'home\')">← Voltar</button>'+
+'<div style="background:#f0fff4;border:2px solid #c6f6d5;border-radius:12px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#38a169;font-weight:600">🤖 A IA se adapta ao seu nível: <strong>'+getLevel(S.xp).id+'</strong></div>'+
+'<div id="cb" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;max-height:400px;overflow-y:auto;padding:4px 0">'+
+S.chatMsgs.map(function(m){return'<div style="display:flex;justify-content:'+(m.role==='user'?'flex-end':'flex-start')+'"><div style="max-width:85%;padding:12px 16px;background:'+(m.role==='user'?'linear-gradient(135deg,#6C63FF,#9F7AEA)':'#fff')+';color:'+(m.role==='user'?'#fff':'#2d3748')+';border:2px solid '+(m.role==='user'?'transparent':'#e2e8f0')+';border-radius:'+(m.role==='user'?'16px 4px 16px 16px':'4px 16px 16px 16px')+';font-size:14px;line-height:1.6;white-space:pre-wrap;box-shadow:0 2px 8px rgba(0,0,0,.06)">'+m.text+'</div></div>'}).join('')+
+(S.chatLd?'<div style="padding:8px;color:#a0aec0;font-size:13px">Pensando... 💭</div>':'')+'</div>'+
+'<div class="fx"><input id="ci" placeholder="Type in English... 🇺🇸" style="flex:1" onkeydown="if(event.key===\'Enter\')sendChat()"><button class="btn bp" style="width:50px;padding:12px" onclick="sendChat()">↑</button></div>');
+setTimeout(function(){var b=document.getElementById('cb');if(b)b.scrollTop=b.scrollHeight},100);
+}
+function sendChat(){var inp=document.getElementById('ci');if(!inp)return;var msg=inp.value.trim();if(!msg||S.chatLd)return;
+S.chatMsgs.push({role:'user',text:msg});S.chatLd=true;inp.value='';render();
+var lv=getLevel(S.xp);var wl={A1:'5-8',A2:'8-12',B1:'10-15',B2:'12-18',C1:'15-25',C2:'any'};
+var hist=S.chatMsgs.slice(-10).map(function(m){return{role:m.role==='assistant'?'model':'user',parts:[{text:m.text}]}});
+var sysPrompt='You are a friendly English conversation partner for '+S.name+', a Brazilian learning English at level '+lv.id+'. Use '+(wl[lv.id]||'10-15')+' words per sentence max. If they make mistakes, gently correct with: By the way, we say: [correct version]. Reply in English only. Add Portuguese translation in parentheses only for difficult words. Keep responses to 2-4 short sentences. Ask follow-up questions to keep the conversation going.'+(lvI(lv.id)>=4?' Use idioms and natural expressions.':'');
+var body=JSON.stringify({system_instruction:{parts:[{text:sysPrompt}]},contents:hist,generationConfig:{maxOutputTokens:300}});
+var url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+S.gemKey;
+fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:body})
+.then(function(r){
+  if(!r.ok){return r.text().then(function(t){throw new Error('HTTP '+r.status+': '+t.substring(0,200))});}
+  return r.json();
+})
+.then(function(d){
+  if(d.error){
+    S.chatMsgs.push({role:'assistant',text:'⚠️ API erro: '+d.error.message+'\n\nSe a key está errada, vá em ⚙️ e cole uma nova.\nSe o modelo não existe, vou tentar outro...'});
+    S.chatLd=false;render();
+    // Try fallback model
+    tryFallbackChat(body,hist,sysPrompt);
+    return;
+  }
+  var reply='';
+  try{reply=d.candidates[0].content.parts[0].text;}catch(e){}
+  if(!reply){
+    S.chatMsgs.push({role:'assistant',text:'⚠️ Resposta vazia. Tentando outro modelo...'});
+    S.chatLd=false;render();
+    tryFallbackChat(body,hist,sysPrompt);
+    return;
+  }
+  S.chatMsgs.push({role:'assistant',text:reply});
+  S.chatCount++;S.daily.chats=(S.daily.chats||0)+1;save();addXp(8);S.chatLd=false;render();
+})
+.catch(function(e){
+  S.chatMsgs.push({role:'assistant',text:'❌ Erro: '+(e.message||'Sem internet?')+'\n\n'+(e.message&&e.message.indexOf('429')!==-1?'Você atingiu o limite gratuito!\n\nSolução: vá em aistudio.google.com → Get API Key → Create API Key in NEW PROJECT.\nIsso reseta sua cota.':'Verifique:\n1. Internet funcionando?\n2. API key correta em ⚙️?\n3. Key gerada em aistudio.google.com?')});
+  S.chatLd=false;render();
+});
+}
+function tryFallbackChat(body,hist,sysPrompt){
+// Try gemini-1.5-flash as fallback
+var url2='https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+S.gemKey;
+fetch(url2,{method:'POST',headers:{'Content-Type':'application/json'},body:body})
+.then(function(r){return r.json()})
+.then(function(d){
+  var reply='';try{reply=d.candidates[0].content.parts[0].text;}catch(e){}
+  if(reply){S.chatMsgs.push({role:'assistant',text:reply});S.chatCount++;S.daily.chats=(S.daily.chats||0)+1;save();addXp(8);}
+  else{S.chatMsgs.push({role:'assistant',text:'⚠️ Nenhum modelo funcionou.\n\nVá em aistudio.google.com:\n1. Faça login com Google\n2. Clique "Get API Key"\n3. Crie uma NOVA key\n4. Cole em ⚙️ Configurações'});}
+  S.chatLd=false;render();
+}).catch(function(){S.chatLd=false;render();});
+}
+
+// ═══════ ACHIEVEMENTS ═══════
+function rAchs(){R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'home\')">← Voltar</button>'+
+'<h2 style="font-size:22px;color:#d69e2e;margin-bottom:14px">🏆 Conquistas ('+S.achs.length+'/'+ACHS.length+')</h2>'+
+'<div class="g2">'+ACHS.map(function(a){var u=S.achs.indexOf(a.id)!==-1;return'<div class="cd tc" style="padding:16px;opacity:'+(u?1:.3)+';border-color:'+(u?'#fbbf24':'#e2e8f0')+'"><div style="font-size:28px;'+(u?'animation:bounce 2s infinite':'')+'">'+a.icon+'</div><div style="font-size:13px;font-weight:800;margin-top:6px;color:'+(u?'#d69e2e':'#a0aec0')+'">'+a.t+'</div><div style="font-size:11px;color:#a0aec0">'+a.d+'</div></div>'}).join('')+'</div>');}
+
+// ═══════ SETTINGS ═══════
+function rSettings(){var lv=getLevel(S.xp);
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'home\')">← Voltar</button>'+
+'<h2 style="font-size:22px;margin-bottom:16px">⚙️ Configurações</h2>'+
+'<div class="cd" style="margin-bottom:12px;border-color:#c6f6d5"><div style="font-size:14px;font-weight:800;margin-bottom:8px">🤖 Google Gemini API Key (grátis!)</div><p style="font-size:12px;color:#718096;margin-bottom:8px">Acesse <strong>aistudio.google.com</strong> → Get API Key</p><input id="gk" type="password" value="'+S.gemKey+'" placeholder="Cole sua API key aqui"><button class="btn bp bs" style="margin-top:8px" onclick="S.gemKey=document.getElementById(\'gk\').value.trim();save();render()">Salvar</button>'+(S.gemKey?'<div style="font-size:12px;color:#38a169;margin-top:4px;font-weight:600">✅ API key salva!</div>':'')+'</div>'+
+'<div class="cd" style="margin-bottom:12px"><div style="font-size:14px;font-weight:800;margin-bottom:8px">👤 Seu Perfil</div><div style="font-size:14px;color:#4a5568;line-height:2">Nome: <strong>'+S.name+'</strong><br>Nível: <strong style="color:'+lv.color+'">'+lv.id+' — '+lv.pt+'</strong><br>XP: <strong>'+S.xp+'</strong><br>Streak: <strong>'+S.streak+' dias 🔥</strong><br>Cards revisados: <strong>'+S.rev+'</strong><br>Histórias lidas: <strong>'+S.storiesR+'</strong></div></div>'+
+'<div class="cd" style="margin-bottom:12px"><div style="font-size:14px;font-weight:800;margin-bottom:4px">🎓 Provas passadas</div><div style="font-size:13px;color:#718096">'+((S.exPassed||[]).length?(S.exPassed||[]).join(', '):'Nenhuma ainda')+'</div></div>'+
+'<div class="cd"><button class="btn" style="background:#fff5f5;color:#e53e3e;border:2px solid #fed7d7;font-size:13px" onclick="if(confirm(\'Apagar TUDO? Todo progresso será perdido!\')){localStorage.removeItem(\'ft4\');location.reload();}">⚠️ Resetar todos os dados</button></div>');}
+
+// ═══════ EXAM ═══════
+function startExam(lv){S.eLv=lv;S.eIdx=0;S.eSc=0;S.fb=null;go('exam');}
+function rExam(){var ex=EXAMS[S.eLv];if(!ex){go('home');return;}var lv=LEVELS.find(function(l){return l.id===S.eLv});var nxt=LEVELS[lvI(S.eLv)+1];
+if(S.eIdx>=ex.qs.length){var ok=S.eSc>=ex.pass;if(ok&&S.exPassed.indexOf(S.eLv)===-1){S.exPassed.push(S.eLv);save();addXp(100);}
+R('<div class="tc" style="padding:32px"><div style="font-size:72px;animation:'+(ok?'bounce 1s infinite':'')+'">'+( ok?'🎓':'📝')+'</div><h2 style="margin:12px 0;color:'+(ok?'#38a169':'#e53e3e')+'">'+(ok?'🎉 Aprovado!':'Ainda não...')+'</h2><p style="font-size:14px;color:#718096">'+S.eSc+'/'+ex.qs.length+' corretas (precisa de '+ex.pass+')</p>'+(ok&&nxt?'<p style="color:'+nxt.color+';font-weight:800;font-size:16px;margin-top:8px">'+nxt.emoji+' Nível '+nxt.id+' desbloqueado!</p>':'')+(!ok?'<p style="color:#a0aec0;font-size:13px;margin-top:8px">Continue praticando! Você consegue! 💪</p>':'')+'<button class="btn bp" style="margin-top:16px" onclick="go(\'home\')">'+(ok?'Bora! 🚀':'Voltar')+'</button></div>');return;}
+var q=ex.qs[S.eIdx];
+R('<div class="fx" style="justify-content:space-between;margin-bottom:12px"><div style="font-size:14px;color:'+lv.color+';font-weight:800">🎓 Prova '+lv.id+(nxt?' → '+nxt.id:'')+'</div><span style="font-size:12px;color:#a0aec0">'+(S.eIdx+1)+'/'+ex.qs.length+'</span></div>'+
+'<div class="fx" style="margin-bottom:16px">'+pb(S.eIdx,ex.qs.length,lv.color)+'</div>'+
+'<div class="cd" style="margin-bottom:12px"><div style="font-size:16px;font-weight:800;line-height:1.5">'+q.q+'</div></div>'+
+'<div class="fc">'+q.o.map(function(o,i){var sel=S.fb===i;var isC=i===q.c;var sh=S.fb!==null;return'<button class="btn" style="background:'+(sh&&isC?'#f0fff4':sh&&sel?'#fff5f5':'#fff')+';color:#2d3748;border:2px solid '+(sh&&isC?'#48bb78':sh&&sel?'#fc8181':'#e2e8f0')+';border-radius:14px;padding:14px;justify-content:flex-start;font-size:14px" '+(sh?'disabled ':'')+'onclick="examAns('+i+')">'+(sh&&isC?'✅ ':'')+(sh&&sel&&!isC?'❌ ':'')+o+'</button>'}).join('')+'</div>');
+}
+function examAns(i){var ex=EXAMS[S.eLv];S.fb=i;if(i===ex.qs[S.eIdx].c)S.eSc++;render();setTimeout(function(){S.eIdx++;S.fb=null;render()},1000);}
+
+// ═══════ IMMERSION ═══════
+function rImmersion(){var lv=getLevel(S.xp).id;var data=IMMERSION[lv]||IMMERSION.A1;
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'home\')">← Voltar</button>'+
+'<h2 style="font-size:22px;color:#6C63FF;margin-bottom:4px">🎬 Guia de Imersão</h2>'+
+'<p style="color:#a0aec0;font-size:12px;margin-bottom:14px">Para seu nível: <strong style="color:'+getLevel(S.xp).color+'">'+lv+'</strong></p>'+
+'<div class="cd" style="margin-bottom:12px;border-color:#fefcbf;background:linear-gradient(135deg,#fffff0,#fefce8)"><div style="font-size:13px;font-weight:800;color:#d69e2e;margin-bottom:6px">⚡ DICA IMPORTANTE</div><div style="font-size:13px;color:#744210;line-height:1.6">'+data.tip+'</div></div>'+
+[{t:'📺 Séries',d:data.series,c:'#e53e3e'},{t:'🎧 Podcasts',d:data.podcast,c:'#6C63FF'},{t:'🎵 Música',d:data.music,c:'#38a169'},{t:'📱 YouTube',d:data.youtube,c:'#d53f8c'}].map(function(sec){return'<div class="cd" style="margin-bottom:10px"><div style="font-size:13px;font-weight:800;color:'+sec.c+';margin-bottom:8px">'+sec.t+'</div>'+sec.d.map(function(s){return'<div style="font-size:13px;color:#4a5568;padding:6px 0;border-bottom:1px solid #f7fafc">• '+s+'</div>'}).join('')+'</div>'}).join('')+
+'<div style="background:linear-gradient(135deg,#f0fff4,#f0fdf4);border:2px solid #c6f6d5;border-radius:14px;padding:14px;font-size:13px;color:#276749;line-height:1.6"><strong>🎯 Meta:</strong> Pelo menos 30 min/dia além do app!</div>');}
+
+// ═══════ ROADMAP ═══════
+function rRoadmap(){var li=lvI(getLevel(S.xp).id);
+var phases=[
+{lv:'A1→A2',months:'Meses 1-6',focus:'Sobrevivência',tasks:'Flashcards + ditado + montar frase. Séries infantis com legenda PT. 3 frases/dia entre vocês.',c:'#8b5cf6'},
+{lv:'A2→B1',months:'Meses 7-12',focus:'Conversas simples',tasks:'Phrasal verbs + chat IA sobre o dia. Friends com legenda EN. Pensem em inglês.',c:'#6366f1'},
+{lv:'B1→B2',months:'Meses 13-18',focus:'Opiniões e fluência',tasks:'Situações + chat IA complexo. Séries SEM legenda. 10 min/dia conversando em inglês.',c:'#3b82f6'},
+{lv:'B2 🎯',months:'Meses 19-24',focus:'Naturalidade',tasks:'App = revisão. Chat IA sobre notícias. TODO entretenimento em inglês. Conversem ao máximo.',c:'#f59e0b'}];
+R('<button class="btn bg bs" style="width:auto;margin-bottom:14px" onclick="go(\'home\')">← Voltar</button>'+
+'<h2 style="font-size:22px;color:#6C63FF;margin-bottom:4px">🗺️ Roadmap B2</h2><p style="color:#a0aec0;font-size:12px;margin-bottom:16px">Seu plano de 2 anos!</p>'+
+'<div style="background:linear-gradient(135deg,#f0fff4,#f0fdf4);border:2px solid #c6f6d5;border-radius:14px;padding:14px;margin-bottom:16px;font-size:13px;color:#276749;line-height:1.5"><strong>⏱️ ~1h30/dia:</strong> 20 min app + 10 min chat + 30-60 min imersão + 3 frases do dia</div>'+
+phases.map(function(p,i){var isPast=i<li;var isCurr=i===li;return'<div class="cd" style="margin-bottom:10px;border-color:'+(isCurr?p.c:'#e2e8f0')+';'+(isPast?'opacity:.5':'')+'"><div class="fx" style="margin-bottom:6px"><div style="width:32px;height:32px;border-radius:50%;background:'+(isCurr?p.c:isPast?'#48bb78':'#e2e8f0')+';display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;font-weight:900">'+(isPast?'✓':(i+1))+'</div><div style="flex:1"><div style="font-size:15px;font-weight:900;color:'+(isCurr?p.c:'#2d3748')+'">'+p.lv+(isCurr?' ← AQUI':'')+'</div><div style="font-size:11px;color:#a0aec0">'+p.months+'</div></div></div><div style="font-size:12px;font-weight:700;color:'+p.c+';margin-bottom:4px">Foco: '+p.focus+'</div><div style="font-size:12px;color:#718096;line-height:1.5">'+p.tasks+'</div></div>'}).join('')+
+'<div class="cd" style="border-color:#d53f8c;text-align:center"><div style="font-size:40px;margin-bottom:8px">🏆</div><div style="font-size:16px;font-weight:900;color:#d53f8c">B2 ALCANÇADO!</div><div style="font-size:12px;color:#718096;margin-top:4px;line-height:1.5">Conversar naturalmente, entender séries sem legenda, expressar opiniões complexas.</div></div>'+
+'<div style="margin-top:14px;background:linear-gradient(135deg,#ebf4ff,#e8eeff);border:2px solid #c3dafe;border-radius:14px;padding:14px;font-size:13px;color:#4c51bf;line-height:1.6">💡 O segredo: <strong>TODO DIA</strong>. 1h30/dia × 365 = 547 horas. Suficiente para B2!</div>');}
+
+// ═══════ INIT ═══════
+load();
+render();
+</script>
+</body>
+</html>
